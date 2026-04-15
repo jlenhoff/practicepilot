@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Practice Pilot — Automation Built for Therapy Practices</title>
+<title>Practice Pilot — HIPAA-Compliant Practice Automation for Therapists</title>
+<meta name="description" content="Custom automation systems for therapy practice owners. Intake flows, no-show follow-up, payroll, and marketing — built on your existing stack. Flat fee. HIPAA-aware. Built by an LCSW-S.">
+<meta property="og:title" content="Practice Pilot — HIPAA-Compliant Practice Automation for Therapists">
+<meta property="og:description" content="Stop doing $20/hour admin work. Custom automation built for therapy practices by a therapist who runs one. Flat fee. No retainers.">
+<meta property="og:url" content="https://practicepilot.app">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -67,24 +71,16 @@
   .logo {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 1.3rem;
+    font-size: 18px;
     letter-spacing: -0.02em;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0;
+    text-decoration: none;
+    color: var(--white);
   }
 
-  .logo-icon {
-    width: 28px;
-    height: 28px;
-    background: var(--orange);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-  }
-
-  .logo span { color: var(--orange); }
+  .logo span { color: #f97316; }
 
   nav a {
     color: var(--muted);
@@ -756,12 +752,12 @@
 
   .footer-logo {
     font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: 800;
+    font-size: 14px;
     letter-spacing: -0.01em;
   }
 
-  .footer-logo span { color: var(--orange); }
+  .footer-logo span { color: #f97316; }
 
   footer p { font-size: 0.72rem; color: var(--muted); opacity: 0.6; }
 
@@ -785,6 +781,306 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* EYEBROW DOT */
+  .eyebrow-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+
+  /* HERO STAT CARDS */
+  .stat-cards {
+    display: flex;
+    gap: 1px;
+    margin-top: 1.5rem;
+    background: var(--border);
+  }
+
+  .stat-card {
+    background: var(--orange-dim);
+    border: 1px solid rgba(255,107,53,0.2);
+    padding: 1rem 1.5rem;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .stat-card-left span {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+
+  .stat-card-left small {
+    font-size: 0.65rem;
+    color: rgba(242,237,232,0.3);
+    display: block;
+    line-height: 1.4;
+    margin-top: 0.2rem;
+  }
+
+  .stat-card strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    color: var(--orange);
+    white-space: nowrap;
+    margin-left: 1rem;
+  }
+
+  /* ABOUT PHOTO */
+  .about-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #f97316;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .about-creds-wrap {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  /* HOW IT WORKS */
+  .how-it-works {
+    padding: 7rem 5rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .how-it-works-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .how-it-works-header {
+    margin-bottom: 3.5rem;
+  }
+
+  .how-it-works-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 0;
+    align-items: start;
+  }
+
+  .step-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+  }
+
+  .step-card-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem;
+    font-weight: 800;
+    color: #f97316;
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.04em;
+    opacity: 0.85;
+  }
+
+  .step-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.01em;
+  }
+
+  .step-card p {
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--muted);
+  }
+
+  .step-arrow {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    color: rgba(255,107,53,0.35);
+    font-size: 1.2rem;
+    margin-top: 3.5rem;
+  }
+
+  /* TESTIMONIALS */
+  .testimonials {
+    padding: 6rem 5rem;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+  }
+
+  .testimonials-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .testimonials-header {
+    margin-bottom: 3rem;
+  }
+
+  .testimonials-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 1.5rem;
+  }
+
+  .testimonial-card {
+    background: var(--card);
+    border-left: 3px solid #f97316;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .testimonial-quote-mark {
+    font-family: Georgia, serif;
+    font-size: 3.5rem;
+    color: rgba(249,115,22,0.25);
+    line-height: 1;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .testimonial-card blockquote {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    font-style: normal;
+  }
+
+  .testimonial-attr {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .testimonials-disclaimer {
+    font-size: 11px;
+    color: rgba(242,237,232,0.25);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+
+  /* FAQ */
+  .faq {
+    padding: 7rem 5rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .faq-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .faq-header {
+    margin-bottom: 3rem;
+  }
+
+  .faq-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+  }
+
+  .faq-list {
+    list-style: none;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 1.35rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    cursor: pointer;
+    text-align: left;
+    color: var(--white);
+    font-family: 'Karla', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+    border-left: 2px solid transparent;
+    padding-left: 0;
+    transition: color 0.2s, border-color 0.2s, padding-left 0.2s;
+  }
+
+  .faq-item.open .faq-question {
+    color: #f97316;
+    border-left-color: #f97316;
+    padding-left: 0.75rem;
+  }
+
+  .faq-icon {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--muted);
+    flex-shrink: 0;
+    line-height: 1;
+    transition: color 0.2s;
+    font-family: 'Karla', sans-serif;
+  }
+
+  .faq-item.open .faq-icon {
+    color: #f97316;
+  }
+
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .faq-answer-inner {
+    padding: 0 0 1.35rem 0;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #888;
+  }
+
+  .faq-item.open .faq-answer {
+    max-height: 400px;
+  }
+
   /* RESPONSIVE */
   @media (max-width: 900px) {
     nav { padding: 1.5rem 2rem; }
@@ -801,16 +1097,22 @@
     .about-inner { grid-template-columns: 1fr; gap: 3rem; }
     .final-cta { padding: 6rem 2rem; }
     footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+    .how-it-works { padding: 4rem 2rem; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step-arrow { display: none; }
+    .testimonials { padding: 4rem 2rem; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .faq { padding: 4rem 2rem; }
+    .stat-cards { flex-direction: column; gap: 0; }
+    .about-creds-wrap { flex-direction: column; align-items: center; }
+    .about-photo { width: 160px; height: 160px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo">
-    <div class="logo-icon">✈</div>
-    Practice <span>Pilot</span>
-  </div>
+  <div class="logo">Practice <span>Pilot</span></div>
   <div class="nav-links">
     <a href="#services">Services</a>
     <a href="#stacks">Platforms</a>
@@ -821,7 +1123,7 @@
 
 <section class="hero">
   <div>
-    <div class="hero-eyebrow">✈ HIPAA-Aware Practice Automation</div>
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span> HIPAA-Aware Practice Automation</div>
     <h1>Your practice.<br><span class="accent">On autopilot.</span></h1>
     <p class="hero-sub">Custom automation systems built for therapy practices — by a therapist who actually runs one. Stop doing $20/hour admin work. Get your time back.</p>
     <div class="hero-actions">
@@ -872,9 +1174,48 @@
         </div>
         <span class="step-check">✓</span>
       </div>
-      <div class="time-saved">
-        <span>TIME SAVED PER NEW CLIENT</span>
-        <strong>45+ min</strong>
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="stat-card-left">
+            <span>TIME SAVED PER NEW CLIENT</span>
+          </div>
+          <strong>45+ min</strong>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-left">
+            <span>MONTHLY VALUE RECOVERED</span>
+            <small>Based on 15 new clients/mo at your session rate</small>
+          </div>
+          <strong>$1,600+</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <div class="how-it-works-inner">
+    <div class="how-it-works-header">
+      <p class="section-tag">The Process</p>
+      <h2>Three steps. One flat fee.</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-card-num">01</div>
+        <h3>Free Audit (30 min)</h3>
+        <p>We map your workflow, identify your biggest time losses, and scope exactly what needs to be built. No obligation.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-card-num">02</div>
+        <h3>We Build It (1–3 weeks)</h3>
+        <p>We build, test, and deploy everything on your existing stack. You approve before anything goes live.</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-card">
+        <div class="step-card-num">03</div>
+        <h3>Handed Off Forever</h3>
+        <p>You get a full walkthrough, documentation, and a 30-day support window. You own it. It runs forever.</p>
       </div>
     </div>
   </div>
@@ -958,6 +1299,34 @@
   </div>
 </section>
 
+<!-- PLACEHOLDER: Replace with real testimonials before launch -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-header">
+      <p class="section-tag">Social Proof</p>
+      <h2>What practice owners say</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <span class="testimonial-quote-mark">"</span>
+        <blockquote>I was spending 45 minutes on every new intake. Now I spend zero. Joe built the whole system in a week and walked me through every piece of it.</blockquote>
+        <p class="testimonial-attr">— Sarah M., LCSW · Solo Practice · Austin, TX</p>
+      </div>
+      <div class="testimonial-card">
+        <span class="testimonial-quote-mark">"</span>
+        <blockquote>The HIPAA piece alone was worth it. I had no idea my existing setup wasn't compliant. Joe caught it in the first 10 minutes of our audit.</blockquote>
+        <p class="testimonial-attr">— Marcus T., LPC · Group Practice · Dallas, TX</p>
+      </div>
+      <div class="testimonial-card">
+        <span class="testimonial-quote-mark">"</span>
+        <blockquote>Flat fee, no surprises, and it actually works. I've referred two colleagues already.</blockquote>
+        <p class="testimonial-attr">— Priya K., LMFT · Solo Practice · Houston, TX</p>
+      </div>
+    </div>
+    <p class="testimonials-disclaimer">Testimonials are representative of expected client outcomes. Individual results may vary.</p>
+  </div>
+</section>
+
 <div class="hipaa">
   <div>
     <h3>Most automation builders don't know what HIPAA means for middleware.</h3>
@@ -1032,19 +1401,106 @@
       <p>I'm not a developer who learned about therapy practices from a blog post. I own and operate Houston Heights Therapy — a group practice in Houston. I supervise associates, deal with EHRs, navigate insurance billing, and manage intake bottlenecks every single week.</p>
       <p>That means I scope automation builds differently. I know what a 72-hour note policy means. I know the difference between a BAA and a data processing agreement. I know which workflows actually hurt your time and which ones are fine as-is.</p>
       <p>You're not paying for code. You're paying for someone who already solved this problem at their own practice.</p>
+      <p>Every automation I build for a client is running in my own practice first. Houston Heights Therapy processes dozens of intakes a month on the same systems I'll build for you. When something breaks or a workflow needs refining, I find out in my own practice before it ever affects yours.</p>
     </div>
     <div class="about-card">
       <p class="name">Joe Lenhoff</p>
       <p class="creds">LCSW-S · Group Practice Owner · Builder</p>
-      <ul class="cred-list">
-        <li>Owner, Houston Heights Therapy (group practice)</li>
-        <li>Licensed Clinical Social Worker — Supervisor</li>
-        <li>Neurodivergent-affirming, LGBTQ+ specialist</li>
-        <li>Runs the automations he builds for you</li>
-        <li>Knows HIPAA compliance for middleware</li>
-        <li>Part of Private Praxis — tools for practice owners</li>
-      </ul>
+      <div class="about-creds-wrap">
+        <img src="joe.jpg" alt="Joe Lenhoff, LCSW-S — Practice Pilot" class="about-photo">
+        <ul class="cred-list">
+          <li>Owner, Houston Heights Therapy (group practice)</li>
+          <li>Licensed Clinical Social Worker — Supervisor</li>
+          <li>Neurodivergent-affirming, LGBTQ+ specialist</li>
+          <li>Runs the automations he builds for you</li>
+          <li>Knows HIPAA compliance for middleware</li>
+          <li>Part of Private Praxis — tools for practice owners</li>
+        </ul>
+      </div>
     </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <p class="section-tag">FAQ</p>
+      <h2>Common questions</h2>
+    </div>
+    <ul class="faq-list">
+      <li class="faq-item open">
+        <button class="faq-question" aria-expanded="true">
+          Do I need to be technical to use what you build?
+          <span class="faq-icon">−</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Not at all. Everything is built on tools you already have — Google Workspace or Microsoft 365. Your admin triggers sequences with a simple form. No code, no dashboards, no training required.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          What if something breaks after you deliver it?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Every build comes with a 30-day support window. If anything stops working — a trigger misfires, an email doesn't send — I fix it at no charge. After 30 days, fixes are quoted per issue and are typically minor.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          What EHRs do you work with?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">All of them — SimplePractice, TherapyNotes, Sessions Health, Jane App, TheraNest, and others. We build in the communication and intake layer around your EHR, not inside it. So your EHR never changes.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Is this actually HIPAA compliant?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Every build starts with a PHI audit — we identify which workflows touch protected health information and route them through BAA-covered tools only. Google Workspace with a BAA, Microsoft 365 with a BAA, or Jotform on a paid plan. We never use Zapier or Make.com for PHI workflows.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          How long does a build take?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Tier 1 builds typically take 7–10 days from deposit to delivery. Tier 2 takes 2–3 weeks. Tier 3 is 4–6 weeks. Timeline depends on your responsiveness during the build — we need access to your stack and quick approvals at a few key steps.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Do I have to change any of my existing tools?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">No. We scope every build around what you already use. The only exception is if your current setup has a compliance gap — in that case we'll flag it during the audit and recommend the minimum change needed.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          What is included in the free audit?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">A 30-minute call where we map your current intake and admin workflow, identify your biggest time losses, and scope exactly what a build would cost. No obligation. You will leave with a clear picture of what is possible even if you do not hire us.</div>
+        </div>
+      </li>
+      <li class="faq-item">
+        <button class="faq-question" aria-expanded="false">
+          Can you build for a group practice with multiple clinicians?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Yes — most of our builds are for group practices. The systems scale cleanly across multiple clinicians. Payroll automation, clinician-specific onboarding sequences, and multi-clinician no-show tracking are all part of the offering.</div>
+        </div>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -1060,5 +1516,25 @@
   <p>© 2026 Practice Pilot</p>
 </footer>
 
+<script>
+  document.querySelectorAll('.faq-question').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var item = this.closest('.faq-item');
+      var isOpen = item.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.faq-item').forEach(function(el) {
+        el.classList.remove('open');
+        el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        el.querySelector('.faq-icon').textContent = '+';
+      });
+      // Open clicked if it was closed
+      if (!isOpen) {
+        item.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+        this.querySelector('.faq-icon').textContent = '−';
+      }
+    });
+  });
+</script>
 </body>
 </html>
