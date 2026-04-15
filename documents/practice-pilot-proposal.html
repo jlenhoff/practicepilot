@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Pilot — Project Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #1a1a1a;
+    --border: #222222;
+    --orange: #f97316;
+    --orange-dim: rgba(249,115,22,0.10);
+    --orange-glow: rgba(249,115,22,0.05);
+    --text: #f0f0f0;
+    --text-dim: #888888;
+    --text-muted: #444444;
+    --radius: 4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(249,115,22,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  /* Header */
+  .doc-header {
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .wordmark-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--orange);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .wordmark-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .wordmark-text span { color: var(--orange); }
+
+  .doc-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  @media (max-width: 500px) { .doc-meta { grid-template-columns: 1fr; } }
+
+  .meta-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .meta-field {
+    font-size: 15px;
+    color: var(--text);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+    min-height: 32px;
+  }
+
+  .meta-field.editable {
+    outline: none;
+    cursor: text;
+  }
+
+  .meta-field.editable:focus {
+    border-color: var(--orange);
+    color: var(--text);
+  }
+
+  .meta-field.editable:empty:before {
+    content: attr(data-placeholder);
+    color: var(--text-muted);
+  }
+
+  .doc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .doc-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 20px;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  p strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Scope table */
+  .scope-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+  }
+
+  .scope-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .scope-table td {
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .scope-table tr:last-child td { border-bottom: none; }
+
+  .scope-table td:first-child {
+    color: var(--text);
+    font-weight: 500;
+    width: 40%;
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .badge-auto {
+    background: rgba(34,197,94,0.12);
+    color: #22c55e;
+    border: 1px solid rgba(34,197,94,0.2);
+  }
+
+  .badge-manual {
+    background: rgba(249,115,22,0.12);
+    color: var(--orange);
+    border: 1px solid rgba(249,115,22,0.2);
+  }
+
+  /* Investment box */
+  .investment-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 8px;
+  }
+
+  .investment-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .investment-row:last-child { border-bottom: none; }
+
+  .investment-label {
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .investment-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .investment-row.total {
+    background: var(--orange-dim);
+  }
+
+  .investment-row.total .investment-label {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    color: var(--text);
+    font-size: 15px;
+  }
+
+  .investment-row.total .investment-value {
+    color: var(--orange);
+    font-size: 18px;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .checklist li::before {
+    content: '✓';
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 13px;
+    margin-top: 1px;
+    min-width: 14px;
+  }
+
+  .checklist.cross li::before {
+    content: '✕';
+    color: var(--text-muted);
+  }
+
+  /* Timeline */
+  .timeline {
+    display: grid;
+    gap: 0;
+  }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-day {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--orange);
+    letter-spacing: 0.08em;
+    padding-top: 2px;
+  }
+
+  .timeline-content strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .timeline-content p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Signature block */
+  .signature-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 500px) { .signature-block { grid-template-columns: 1fr; } }
+
+  .sig-party label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  .sig-line {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    min-height: 40px;
+  }
+
+  .sig-name {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* Info box */
+  .info-box {
+    background: var(--orange-glow);
+    border: 1px solid rgba(249,115,22,0.15);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-top: 8px;
+  }
+
+  .info-box p {
+    font-size: 13px;
+    margin: 0;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .info-box p strong { color: var(--orange); }
+
+  /* Print */
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    margin-bottom: 48px;
+  }
+
+  .print-btn:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-text span { color: var(--text-dim); }
+
+  @media print {
+    body::before { display: none; }
+    .print-btn { display: none; }
+    .wrapper { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <button class="print-btn" onclick="window.print()">
+    ↓ Save as PDF
+  </button>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="wordmark">
+      <div class="wordmark-icon"></div>
+      <div class="wordmark-text">Practice <span>Pilot</span></div>
+    </div>
+
+    <div class="doc-tag">Project Proposal</div>
+    <div class="doc-title">Automation Build Proposal</div>
+
+    <div class="doc-meta">
+      <div class="meta-group">
+        <label>Prepared for</label>
+        <div class="meta-field editable" contenteditable="true" data-placeholder="Client Practice Name"></div>
+      </div>
+      <div class="meta-group">
+        <label>Practice Owner</label>
+        <div class="meta-field editable" contenteditable="true" data-placeholder="Client Name"></div>
+      </div>
+      <div class="meta-group">
+        <label>Proposal Date</label>
+        <div class="meta-field editable" contenteditable="true" data-placeholder="April 15, 2026"></div>
+      </div>
+      <div class="meta-group">
+        <label>Proposal Valid Until</label>
+        <div class="meta-field editable" contenteditable="true" data-placeholder="May 15, 2026"></div>
+      </div>
+      <div class="meta-group">
+        <label>Prepared by</label>
+        <div class="meta-field">Joe Lenhoff, LCSW-S — Practice Pilot</div>
+      </div>
+      <div class="meta-group">
+        <label>Contact</label>
+        <div class="meta-field">joe@privatepraxis.co</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: Overview -->
+  <div class="section">
+    <div class="section-label">01 — Overview</div>
+    <h2>What We're Building</h2>
+    <p>This proposal outlines the scope, investment, and timeline for your Practice Pilot automation build. Everything in this document is based on what we learned during your free audit — your stack, your workflow, and your biggest time losses.</p>
+    <p>Practice Pilot builds <strong>HIPAA-aware automation systems</strong> for therapy practices. Every build starts with a PHI audit to identify which workflows touch protected data and routes them through compliant tools only. You pay once. It runs forever.</p>
+  </div>
+
+  <!-- Section: Scope -->
+  <div class="section">
+    <div class="section-label">02 — Scope of Work</div>
+    <h2>What's Included in This Build</h2>
+    <p>The following automations will be built, tested, and handed off as part of this project. Edit the rows below to match the agreed scope.</p>
+
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th>Automation</th>
+          <th>Description</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td contenteditable="true">Intake Flow</td>
+          <td contenteditable="true">Form submission → internal alert → welcome email → client folder created → referral source logged</td>
+          <td><span class="badge badge-auto">Automated</span></td>
+        </tr>
+        <tr>
+          <td contenteditable="true">New Client Onboarding</td>
+          <td contenteditable="true">Confirmation email → what to expect email → pre-session cancellation policy reminder</td>
+          <td><span class="badge badge-auto">Automated</span></td>
+        </tr>
+        <tr>
+          <td contenteditable="true">No-Show Follow-Up</td>
+          <td contenteditable="true">Same-day outreach → 48hr check-in → 96hr internal alert → logged to tracking sheet</td>
+          <td><span class="badge badge-auto">Automated</span></td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Scheduling Decision</td>
+          <td contenteditable="true">Review intake, confirm clinical fit, send calendar invite and paperwork</td>
+          <td><span class="badge badge-manual">Manual</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section: Not Included -->
+  <div class="section">
+    <div class="section-label">03 — Exclusions</div>
+    <h2>What's Not Included</h2>
+    <ul class="checklist cross">
+      <li>Any automation that runs inside your EHR or modifies EHR data directly</li>
+      <li>Insurance verification, billing, or claims processing</li>
+      <li>Clinical documentation, treatment plans, or progress notes</li>
+      <li>Marketing automation or social media scheduling</li>
+      <li>Ongoing maintenance beyond the support window (see below)</li>
+      <li>Staff training beyond the included Loom walkthrough</li>
+    </ul>
+  </div>
+
+  <!-- Section: HIPAA -->
+  <div class="section">
+    <div class="section-label">04 — HIPAA Compliance</div>
+    <h2>How We Handle Compliance</h2>
+    <p>Every Practice Pilot build starts with a <strong>PHI audit</strong> — identifying which workflows touch protected health information and which don't. This determines which tools can be used at each step.</p>
+
+    <div class="info-box">
+      <p><strong>Your stack:</strong> <span contenteditable="true" style="color: var(--text);">Google Workspace (Business) — BAA in place ✓</span></p>
+    </div>
+
+    <br>
+    <ul class="checklist">
+      <li>All workflows touching PHI will run through BAA-covered tools only</li>
+      <li>Internal alerts containing no PHI may use any tool</li>
+      <li>Zapier and Make.com will not be used — neither offers an accessible BAA for small practices</li>
+      <li>Google Apps Script runs inside your Google Workspace account — automatically covered under your existing BAA</li>
+      <li>A PHI workflow map will be provided at delivery documenting which data touches which tool</li>
+    </ul>
+  </div>
+
+  <!-- Section: Platform -->
+  <div class="section">
+    <div class="section-label">05 — Platform</div>
+    <h2>What We're Building On</h2>
+
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Tool</th>
+          <th>HIPAA Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td contenteditable="true">Intake form</td>
+          <td contenteditable="true">Jotform (BAA on paid plan)</td>
+          <td contenteditable="true">✓ Compliant</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Automation engine</td>
+          <td contenteditable="true">Google Apps Script</td>
+          <td contenteditable="true">✓ Covered under Workspace BAA</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Email</td>
+          <td contenteditable="true">Gmail (Google Workspace)</td>
+          <td contenteditable="true">✓ Covered under Workspace BAA</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Client folders</td>
+          <td contenteditable="true">Google Drive</td>
+          <td contenteditable="true">✓ Covered under Workspace BAA</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Tracking</td>
+          <td contenteditable="true">Google Sheets</td>
+          <td contenteditable="true">✓ Covered under Workspace BAA</td>
+        </tr>
+        <tr>
+          <td contenteditable="true">Trigger form</td>
+          <td contenteditable="true">Google Forms</td>
+          <td contenteditable="true">✓ Covered under Workspace BAA</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section: Investment -->
+  <div class="section">
+    <div class="section-label">06 — Investment</div>
+    <h2>Flat Fee — No Retainers</h2>
+    <p>Practice Pilot charges a one-time flat fee per build. No monthly fees, no surprise invoices, no retainers. You pay once — it runs forever.</p>
+
+    <div class="investment-box">
+      <div class="investment-row">
+        <div class="investment-label" contenteditable="true">Intake Flow + Onboarding + No-Show Follow-Up</div>
+        <div class="investment-value" contenteditable="true">$2,500</div>
+      </div>
+      <div class="investment-row">
+        <div class="investment-label" contenteditable="true">PHI audit and compliance review</div>
+        <div class="investment-value" contenteditable="true">Included</div>
+      </div>
+      <div class="investment-row">
+        <div class="investment-label" contenteditable="true">Loom walkthrough on delivery</div>
+        <div class="investment-value" contenteditable="true">Included</div>
+      </div>
+      <div class="investment-row">
+        <div class="investment-label" contenteditable="true">30-day support window</div>
+        <div class="investment-value" contenteditable="true">Included</div>
+      </div>
+      <div class="investment-row total">
+        <div class="investment-label">Total Investment</div>
+        <div class="investment-value" contenteditable="true">$2,500</div>
+      </div>
+    </div>
+
+    <br>
+    <div class="info-box">
+      <p><strong>Payment terms:</strong> 50% deposit to begin. 50% due on delivery. Payment via invoice — ACH or card accepted.</p>
+    </div>
+  </div>
+
+  <!-- Section: Timeline -->
+  <div class="section">
+    <div class="section-label">07 — Timeline</div>
+    <h2>How This Works</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-day">Day 0</div>
+        <div class="timeline-content">
+          <strong>Proposal signed + deposit received</strong>
+          <p>Build begins. Joe reviews your stack and PHI audit in detail.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-day">Days 1–3</div>
+        <div class="timeline-content">
+          <strong>PHI audit + infrastructure setup</strong>
+          <p>BAA verification, form setup, folder structure, sheet templates created in your environment.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-day">Days 4–8</div>
+        <div class="timeline-content">
+          <strong>Build and internal testing</strong>
+          <p>Automation code written and tested end-to-end in a staging environment before touching your live account.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-day">Days 9–10</div>
+        <div class="timeline-content">
+          <strong>Live deployment + walkthrough</strong>
+          <p>System deployed to your account. Loom walkthrough recorded. You review and approve.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-day">Day 10</div>
+        <div class="timeline-content">
+          <strong>Delivery + final payment</strong>
+          <p>Delivery document sent. Final invoice due. 30-day support window begins.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-day">Days 11–40</div>
+        <div class="timeline-content">
+          <strong>Support window</strong>
+          <p>Bug fixes, adjustments, and questions addressed within 48 hours. Scope changes quoted separately.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section: What We Need -->
+  <div class="section">
+    <div class="section-label">08 — What We Need From You</div>
+    <h2>Your Responsibilities</h2>
+    <ul class="checklist">
+      <li>Access to your Google Workspace or Microsoft 365 admin account during setup</li>
+      <li>Confirmation that your BAA is active (or willingness to set one up — we'll guide you)</li>
+      <li>A designated point of contact for approvals during the build</li>
+      <li>Email templates or brand voice notes if you want emails customized beyond our defaults</li>
+      <li>Timely responses during the build window — delays on your end may extend the timeline</li>
+      <li>Review and approval of the completed build before final payment is due</li>
+    </ul>
+  </div>
+
+  <!-- Section: Terms -->
+  <div class="section">
+    <div class="section-label">09 — Terms</div>
+    <h2>Key Terms</h2>
+
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ownership</td>
+          <td>All code and automations built become your property on final payment. Practice Pilot retains no ongoing access to your account.</td>
+        </tr>
+        <tr>
+          <td>Support window</td>
+          <td>30 days from delivery. Bug fixes and adjustments included. New features or scope changes quoted separately.</td>
+        </tr>
+        <tr>
+          <td>Refund policy</td>
+          <td>Deposit is non-refundable once build begins. If Practice Pilot is unable to complete the build as scoped, deposit will be returned in full.</td>
+        </tr>
+        <tr>
+          <td>HIPAA responsibility</td>
+          <td>Practice Pilot designs compliant workflows. Client is responsible for maintaining their own BAAs and ensuring staff follow documented procedures.</td>
+        </tr>
+        <tr>
+          <td>Scope changes</td>
+          <td>Changes to scope after work begins will be quoted and approved before additional work proceeds.</td>
+        </tr>
+        <tr>
+          <td>Legal disclaimer</td>
+          <td>This proposal does not constitute legal or compliance advice. Consult your malpractice carrier or healthcare attorney for complex termination or discharge scenarios.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Section: Signature -->
+  <div class="section">
+    <div class="section-label">10 — Authorization</div>
+    <h2>Ready to Proceed?</h2>
+    <p>Sign below to authorize this project and confirm your agreement to the terms outlined in this proposal. A deposit invoice will be sent upon receipt.</p>
+
+    <div class="signature-block">
+      <div class="sig-party">
+        <label>Client — Practice Owner</label>
+        <div class="sig-line"></div>
+        <div class="sig-name" contenteditable="true">Name / Date</div>
+      </div>
+      <div class="sig-party">
+        <label>Practice Pilot</label>
+        <div class="sig-line"></div>
+        <div class="sig-name">Joe Lenhoff, LCSW-S / Date</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-text">Practice Pilot · <span>A Private Praxis Product</span> · Houston Heights Consulting LLC</div>
+    <div class="footer-text"><span>joe@privatepraxis.co · practicepilot.app</span></div>
+  </div>
+
+</div>
+</body>
+</html>

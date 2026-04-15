@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Pilot — Marketing Content Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #1a1a1a;
+    --border: #222222;
+    --border-hover: #2e2e2e;
+    --orange: #f97316;
+    --orange-dim: rgba(249,115,22,0.12);
+    --orange-glow: rgba(249,115,22,0.05);
+    --text: #f0f0f0;
+    --text-dim: #888888;
+    --text-muted: #444444;
+    --radius: 4px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    min-height: 100vh;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(249,115,22,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .wordmark-icon {
+    width: 28px; height: 28px;
+    background: var(--orange);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+  .wordmark-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .wordmark-text span { color: var(--orange); }
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--orange);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .header-tag::before { content: ''; display: block; width: 20px; height: 1px; background: var(--orange); }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.1; margin-bottom: 14px;
+  }
+  h1 em { font-style: normal; color: var(--orange); }
+  .header-sub {
+    font-size: 14px; color: var(--text-dim);
+    line-height: 1.6; margin-bottom: 48px;
+    max-width: 520px;
+  }
+  .section { margin-bottom: 44px; }
+  .section-header {
+    display: flex; align-items: baseline; gap: 12px;
+    margin-bottom: 24px; padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--orange); letter-spacing: 0.1em;
+    padding: 3px 7px;
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 2px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: 14px;
+    font-weight: 700; letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .field { margin-bottom: 20px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:500px) { .field-row { grid-template-columns: 1fr; } }
+  .field-label {
+    display: block; font-size: 13px; font-weight: 600;
+    color: var(--text); margin-bottom: 7px;
+  }
+  .field-label .req { color: var(--orange); }
+  .field-hint { font-size: 12px; color: var(--text-dim); margin-bottom: 7px; line-height: 1.5; }
+  input[type="text"], input[type="email"], select, textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 13px; padding: 10px 12px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-muted); }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+    padding-right: 32px; cursor: pointer;
+  }
+  select option { background: #1a1a1a; }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .options-grid { display: grid; gap: 8px; }
+  .options-grid.two-col { grid-template-columns: 1fr 1fr; }
+  @media(max-width:500px) { .options-grid.two-col { grid-template-columns: 1fr; } }
+  .option-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 13px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .option-item:hover { border-color: var(--border-hover); background: var(--surface-2); }
+  .option-item:has(input:checked) { border-color: var(--orange); background: var(--orange-dim); }
+  .option-item input[type="checkbox"],
+  .option-item input[type="radio"] {
+    width: 15px; height: 15px; min-width: 15px;
+    padding: 0; margin-top: 1px;
+    accent-color: var(--orange);
+    border: none; background: none; box-shadow: none;
+  }
+  .option-item input:focus { box-shadow: none; border-color: transparent; background: transparent; }
+  .option-label { font-size: 13px; color: var(--text); line-height: 1.4; }
+  .option-label small { display: block; font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+  .info-box {
+    background: var(--orange-glow);
+    border: 1px solid rgba(249,115,22,0.15);
+    border-radius: var(--radius);
+    padding: 13px 16px; margin-bottom: 20px;
+    font-size: 13px; color: var(--text-dim); line-height: 1.6;
+  }
+  .info-box strong { color: var(--orange); }
+  .submit-section { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .submit-section p { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.6; }
+  .btn-submit {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--orange); color: #000;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 13px 28px; border: none; border-radius: var(--radius);
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-submit:hover { opacity: 0.9; }
+  .btn-submit:active { transform: scale(0.98); }
+  .success-screen {
+    display: none; text-align: center; padding: 80px 20px;
+  }
+  .success-icon {
+    width: 56px; height: 56px;
+    background: var(--orange-dim);
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px; font-size: 22px;
+  }
+  .success-screen h2 {
+    font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; margin-bottom: 10px;
+  }
+  .success-screen p { font-size: 14px; color: var(--text-dim); line-height: 1.6; max-width: 400px; margin: 0 auto; }
+  .footer {
+    margin-top: 70px; padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    color: var(--text-muted); letter-spacing: 0.06em;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer span { color: var(--text-dim); }
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="wordmark">
+    <div class="wordmark-icon"></div>
+    <div class="wordmark-text">Practice <span>Pilot</span></div>
+  </div>
+
+  <div class="header-tag">Marketing Setup</div>
+  <h1>Your practice.<br><em>In your own voice.</em></h1>
+  <p class="header-sub">Complete this once. We'll use it every month to generate content that actually sounds like you — not generic therapy-speak. This takes about 10 minutes.</p>
+
+  <form id="contentForm">
+
+    <!-- SECTION 1: Practice Identity -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <span class="section-title">Practice Identity</span>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">Practice name <span class="req">*</span></label>
+          <input type="text" placeholder="Houston Heights Therapy" required>
+        </div>
+        <div class="field">
+          <label class="field-label">Your name <span class="req">*</span></label>
+          <input type="text" placeholder="Joe Lenhoff" required>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label">City / neighborhood <span class="req">*</span></label>
+          <input type="text" placeholder="Houston Heights, TX" required>
+        </div>
+        <div class="field">
+          <label class="field-label">Practice type <span class="req">*</span></label>
+          <select>
+            <option value="" disabled selected>Select type</option>
+            <option>Solo practice</option>
+            <option>Small group practice (2–5)</option>
+            <option>Group practice (6+)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Website URL</label>
+        <input type="text" placeholder="https://yourpractice.com">
+      </div>
+    </div>
+
+    <!-- SECTION 2: Who You Serve -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <span class="section-title">Who You Serve</span>
+      </div>
+      <div class="info-box">
+        <strong>Why this matters:</strong> Content that speaks to your actual clients converts better than generic mental health posts. Be specific.
+      </div>
+      <div class="field">
+        <label class="field-label">Who are your primary clients? <span class="req">*</span></label>
+        <div class="field-hint">Select all that apply.</div>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="checkbox"><span class="option-label">Adults (18–35)</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Adults (35–60)</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Older adults (60+)</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Adolescents (13–17)</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Children (under 13)</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Couples</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Families</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Groups</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">What do you specialize in? <span class="req">*</span></label>
+        <div class="field-hint">Select your top specialties.</div>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="checkbox"><span class="option-label">Trauma / PTSD</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Anxiety</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Depression</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">LGBTQ+ affirming</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Neurodivergent / ADHD / Autism</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Relationship issues</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Life transitions</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Grief and loss</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Burnout / work stress</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Identity and self-esteem</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Addiction / recovery</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">OCD</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Any other specialties not listed?</label>
+        <input type="text" placeholder="e.g. perinatal mental health, first responders, chronic illness...">
+      </div>
+      <div class="field">
+        <label class="field-label">What modalities do you use? <span class="req">*</span></label>
+        <div class="field-hint">Select all that apply.</div>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="checkbox"><span class="option-label">IFS (Internal Family Systems)</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">EMDR</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">CBT</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">DBT</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">ACT</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Somatic approaches</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Mindfulness-based</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Psychodynamic</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Narrative therapy</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Motivational interviewing</span></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: Voice and Tone -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <span class="section-title">Voice and Tone</span>
+      </div>
+      <div class="field">
+        <label class="field-label">How would you describe your practice's tone? <span class="req">*</span></label>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="radio" name="tone"><span class="option-label">Warm and nurturing<small>Like a caring friend</small></span></label>
+          <label class="option-item"><input type="radio" name="tone"><span class="option-label">Professional and clinical<small>Credibility first</small></span></label>
+          <label class="option-item"><input type="radio" name="tone"><span class="option-label">Direct and empowering<small>No-nonsense, action-focused</small></span></label>
+          <label class="option-item"><input type="radio" name="tone"><span class="option-label">Conversational and relatable<small>Real talk, no jargon</small></span></label>
+          <label class="option-item"><input type="radio" name="tone"><span class="option-label">Thoughtful and reflective<small>Invite the reader to pause</small></span></label>
+          <label class="option-item"><input type="radio" name="tone"><span class="option-label">Community-oriented<small>We're in this together</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">What should posts NEVER do or say?</label>
+        <div class="field-hint">Hard rules. These will be baked into every content generation prompt.</div>
+        <div class="options-grid">
+          <label class="option-item"><input type="checkbox"><span class="option-label">Never use clinical jargon without explaining it</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Never imply therapy is a quick fix</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Never use fear or shame as motivation</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Never post about specific diagnoses without care</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Never be preachy or lecture-y</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Never make it sound like a sales pitch</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Describe your practice's personality in 2–3 sentences.</label>
+        <div class="field-hint">Pretend you're explaining it to a friend. This is the voice Claude will write in.</div>
+        <textarea placeholder="Example: We're a trauma-informed group practice that takes a real, human approach to therapy. We don't do toxic positivity or generic advice. Our clients are smart, self-aware people who are ready to do real work..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">Any phrases or words you love that feel like you?</label>
+        <input type="text" placeholder="e.g. 'parts work', 'nervous system', 'window of tolerance', 'healing is not linear'...">
+      </div>
+      <div class="field">
+        <label class="field-label">Any phrases or words you hate and want to avoid?</label>
+        <input type="text" placeholder="e.g. 'mental health journey', 'safe space', 'it's okay not to be okay'...">
+      </div>
+    </div>
+
+    <!-- SECTION 4: Content Preferences -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <span class="section-title">Content Preferences</span>
+      </div>
+      <div class="field">
+        <label class="field-label">Which platforms are you posting to? <span class="req">*</span></label>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="checkbox"><span class="option-label">Facebook Page</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Facebook Groups</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Instagram</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">LinkedIn</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Google Business Profile</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Threads</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">How many posts per week do you want generated? <span class="req">*</span></label>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="radio" name="post_freq"><span class="option-label">1–2 per week<small>Low volume, high quality</small></span></label>
+          <label class="option-item"><input type="radio" name="post_freq"><span class="option-label">3–4 per week<small>Steady presence</small></span></label>
+          <label class="option-item"><input type="radio" name="post_freq"><span class="option-label">5–7 per week<small>Daily posting</small></span></label>
+          <label class="option-item"><input type="radio" name="post_freq"><span class="option-label">Just GBP posts<small>Google only, weekly</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">What mix of content do you want? <span class="req">*</span></label>
+        <div class="field-hint">Select all types you want included.</div>
+        <div class="options-grid">
+          <label class="option-item"><input type="checkbox"><span class="option-label">Psychoeducation<small>Explaining concepts like nervous system regulation, attachment, etc.</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Myth-busting<small>Correcting misconceptions about therapy or mental health</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Normalizing therapy<small>Reducing stigma, making therapy feel accessible</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Seasonal / awareness posts<small>Mental health awareness months, holidays, back to school, etc.</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Clinician spotlights<small>Brief intros to your team and their approaches</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Practice updates<small>New services, accepting new clients, insurance changes</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Reflective prompts<small>Questions that invite the reader to pause and reflect</small></span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Resources and tips<small>Coping tools, grounding exercises, reading recommendations</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Are you currently accepting new clients? <span class="req">*</span></label>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="radio" name="accepting"><span class="option-label">Yes — include CTAs in posts</span></label>
+          <label class="option-item"><input type="radio" name="accepting"><span class="option-label">Limited — mention selectively</span></label>
+          <label class="option-item"><input type="radio" name="accepting"><span class="option-label">No — don't mention availability</span></label>
+          <label class="option-item"><input type="radio" name="accepting"><span class="option-label">Waitlist only — mention waitlist</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">Insurance you accept (for GBP and CTAs)</label>
+        <input type="text" placeholder="e.g. Aetna, BCBS, United, Cigna, self-pay...">
+      </div>
+    </div>
+
+    <!-- SECTION 5: Referral Partners -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <span class="section-title">Referral Partners</span>
+      </div>
+      <div class="info-box">
+        <strong>For the referral outreach automation.</strong> We'll use this to personalize quarterly touchpoint emails to your referral network.
+      </div>
+      <div class="field">
+        <label class="field-label">What types of providers refer clients to you? <span class="req">*</span></label>
+        <div class="options-grid two-col">
+          <label class="option-item"><input type="checkbox"><span class="option-label">Primary care physicians</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Psychiatrists</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">School counselors</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Other therapists</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Employee assistance programs</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Pediatricians</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">OB/GYN providers</span></label>
+          <label class="option-item"><input type="checkbox"><span class="option-label">Community organizations</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">What's the best one-sentence description of who you serve for a referral partner?</label>
+        <div class="field-hint">This will be used in outreach emails. Something a PCP could copy-paste to a patient.</div>
+        <textarea placeholder="Example: We specialize in trauma-informed therapy for adults and adolescents in the Houston area, with a focus on LGBTQ+ and neurodivergent clients..." style="min-height:70px;"></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">Anything specific you want referral partners to know?</label>
+        <textarea placeholder="e.g. We have evening availability. We accept Aetna and BCBS. We have two Spanish-speaking clinicians..." style="min-height:70px;"></textarea>
+      </div>
+    </div>
+
+    <div class="submit-section">
+      <p>This profile is stored securely and used only to generate your practice's marketing content. You can update it at any time.</p>
+      <button type="submit" class="btn-submit">
+        Save content profile
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✈</div>
+    <h2>Content profile saved.</h2>
+    <p>Your practice voice and preferences have been recorded. Content generation will use this profile every month.</p>
+  </div>
+
+  <div class="footer">
+    <div>Practice Pilot · <span>A Private Praxis Product</span> · Houston Heights Consulting LLC</div>
+    <div><span>practicepilot.app</span></div>
+  </div>
+</div>
+<script>
+  document.getElementById('contentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('contentForm').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+</body>
+</html>

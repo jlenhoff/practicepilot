@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Pilot — Build Delivery</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface-2: #1a1a1a;
+    --border: #222222;
+    --orange: #f97316;
+    --orange-dim: rgba(249,115,22,0.10);
+    --orange-glow: rgba(249,115,22,0.05);
+    --text: #f0f0f0;
+    --text-dim: #888888;
+    --text-muted: #444444;
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.10);
+    --radius: 4px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Instrument Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(249,115,22,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 60px 24px 100px;
+  }
+
+  .print-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    margin-bottom: 40px;
+  }
+
+  .print-btn:hover { border-color: var(--orange); color: var(--orange); }
+
+  /* Header */
+  .doc-header {
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+
+  .wordmark-icon {
+    width: 26px;
+    height: 26px;
+    background: var(--orange);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .wordmark-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .wordmark-text span { color: var(--orange); }
+
+  .delivery-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--green-dim);
+    border: 1px solid rgba(34,197,94,0.2);
+    border-radius: 99px;
+    padding: 6px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .doc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(24px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  .doc-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 560px) { .doc-meta { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 380px) { .doc-meta { grid-template-columns: 1fr; } }
+
+  .meta-item label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .meta-item .meta-value {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .meta-item .meta-value.editable {
+    outline: none;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 2px;
+  }
+
+  .meta-item .meta-value.editable:focus { border-color: var(--orange); }
+  .meta-item .meta-value.editable:empty::before { content: attr(data-ph); color: var(--text-muted); }
+
+  /* Sections */
+  .section { margin-bottom: 48px; }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+
+  p strong { color: var(--text); font-weight: 600; }
+
+  /* Automation cards */
+  .auto-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+
+  .auto-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .auto-card-header:hover { background: var(--surface-2); }
+
+  .auto-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .auto-card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .badge-live {
+    background: var(--green-dim);
+    color: var(--green);
+    border: 1px solid rgba(34,197,94,0.2);
+  }
+
+  .auto-card-toggle {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+
+  .auto-card-toggle.open { transform: rotate(180deg); }
+
+  .auto-card-body {
+    display: none;
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  .auto-card-body.open { display: block; }
+
+  .auto-steps {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .auto-steps li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--orange);
+    background: var(--orange-dim);
+    border: 1px solid rgba(249,115,22,0.2);
+    padding: 2px 6px;
+    border-radius: 2px;
+    min-width: 28px;
+    text-align: center;
+    margin-top: 1px;
+  }
+
+  /* Info table */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .info-table td {
+    font-size: 13px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .info-table td:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    width: 35%;
+    white-space: nowrap;
+  }
+
+  .info-table td:last-child { color: var(--text-dim); }
+  .info-table tr:last-child td { border-bottom: none; }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .checklist li::before {
+    content: '✓';
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 12px;
+    margin-top: 1px;
+    min-width: 12px;
+  }
+
+  /* Warning box */
+  .warning-box {
+    background: rgba(249,115,22,0.06);
+    border: 1px solid rgba(249,115,22,0.2);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-top: 8px;
+  }
+
+  .warning-box p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .warning-box p strong { color: var(--orange); }
+
+  /* Support section */
+  .support-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 480px) { .support-card { grid-template-columns: 1fr; } }
+
+  .support-item label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .support-item .val {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .support-item .val a {
+    color: var(--orange);
+    text-decoration: none;
+  }
+
+  /* Maintenance checklist */
+  .maintenance-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .maintenance-item:last-child { border-bottom: none; }
+
+  .maint-freq {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--orange);
+    background: var(--orange-dim);
+    border: 1px solid rgba(249,115,22,0.15);
+    padding: 3px 8px;
+    border-radius: 2px;
+    min-width: 72px;
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .maint-text strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .maint-text p {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* Acknowledgment */
+  .ack-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-top: 8px;
+  }
+
+  .ack-box p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  @media (max-width: 480px) { .sig-grid { grid-template-columns: 1fr; } }
+
+  .sig-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  .sig-line {
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 6px;
+    min-height: 36px;
+  }
+
+  .sig-name-label {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .footer-text span { color: var(--text-dim); }
+
+  @media print {
+    body::before { display: none; }
+    .print-btn { display: none; }
+    .auto-card-body { display: block !important; }
+    .wrapper { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <button class="print-btn" onclick="window.print()">↓ Save as PDF</button>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="wordmark">
+      <div class="wordmark-icon"></div>
+      <div class="wordmark-text">Practice <span>Pilot</span></div>
+    </div>
+
+    <div class="delivery-badge">✓ Build Complete</div>
+    <div class="doc-title">Your Automation<br>Is Live.</div>
+
+    <div class="doc-meta">
+      <div class="meta-item">
+        <label>Delivered to</label>
+        <div class="meta-value editable" contenteditable="true" data-ph="Practice Name"></div>
+      </div>
+      <div class="meta-item">
+        <label>Delivery date</label>
+        <div class="meta-value editable" contenteditable="true" data-ph="April 15, 2026"></div>
+      </div>
+      <div class="meta-item">
+        <label>Support window ends</label>
+        <div class="meta-value editable" contenteditable="true" data-ph="May 15, 2026"></div>
+      </div>
+      <div class="meta-item">
+        <label>Built by</label>
+        <div class="meta-value">Joe Lenhoff, LCSW-S</div>
+      </div>
+      <div class="meta-item">
+        <label>Platform</label>
+        <div class="meta-value editable" contenteditable="true" data-ph="Google Workspace"></div>
+      </div>
+      <div class="meta-item">
+        <label>Support contact</label>
+        <div class="meta-value">joe@privatepraxis.co</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What Was Built -->
+  <div class="section">
+    <div class="section-label">01 — What Was Built</div>
+    <h2>Your Automation System</h2>
+    <p>The following automations have been built, tested, and deployed to your account. Click each one to see exactly what it does.</p>
+
+    <!-- Automation 1 -->
+    <div class="auto-card">
+      <div class="auto-card-header" onclick="toggleCard(this)">
+        <div class="auto-card-title">
+          <div class="auto-card-name">Intake Flow</div>
+          <span class="badge badge-live">Live</span>
+        </div>
+        <div class="auto-card-toggle">▼</div>
+      </div>
+      <div class="auto-card-body">
+        <ul class="auto-steps">
+          <li><span class="step-num">01</span>Client submits intake form → internal alert fires to practice immediately (no PHI in alert)</li>
+          <li><span class="step-num">02</span>Welcome email sent to client within 5 minutes — personalized with first name</li>
+          <li><span class="step-num">03</span>Client folder auto-created in Google Drive — named by last name and month</li>
+          <li><span class="step-num">04</span>Referral source logged automatically to your intake tracking sheet</li>
+          <li><span class="step-num">05</span>Scheduling decision remains manual — clinical judgment required</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Automation 2 -->
+    <div class="auto-card">
+      <div class="auto-card-header" onclick="toggleCard(this)">
+        <div class="auto-card-title">
+          <div class="auto-card-name">New Client Onboarding</div>
+          <span class="badge badge-live">Live</span>
+        </div>
+        <div class="auto-card-toggle">▼</div>
+      </div>
+      <div class="auto-card-body">
+        <ul class="auto-steps">
+          <li><span class="step-num">01</span>Triggered manually via Practice Pilot Trigger Form when client is confirmed</li>
+          <li><span class="step-num">02</span>Email 1 — Confirmation + logistics: address, parking, clinician name, contact info</li>
+          <li><span class="step-num">03</span>Email 2 — What to expect (48hrs later): first session overview, what to bring, reassurance</li>
+          <li><span class="step-num">04</span>Email 3 — Cancellation policy reminder (72hrs before appointment)</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Automation 3 -->
+    <div class="auto-card">
+      <div class="auto-card-header" onclick="toggleCard(this)">
+        <div class="auto-card-title">
+          <div class="auto-card-name">No-Show Follow-Up</div>
+          <span class="badge badge-live">Live</span>
+        </div>
+        <div class="auto-card-toggle">▼</div>
+      </div>
+      <div class="auto-card-body">
+        <ul class="auto-steps">
+          <li><span class="step-num">01</span>Triggered via Practice Pilot Trigger Form — select "No-Show" and check box if first appointment</li>
+          <li><span class="step-num">02</span>Track A (existing client): Email 1 same day → Email 2 at 48hrs → Internal alert at 96hrs → Logged to sheet</li>
+          <li><span class="step-num">03</span>Track B (intake/first appt): Email 1 same day → Email 2 at 48hrs → Email 3 at 96hrs → Internal alert → Logged as "Intake No-Show"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <p><strong>Note:</strong> All automation sequences run from your Google Workspace account under your BAA. No PHI passes through any non-compliant tool. A full PHI workflow map is included at the end of this document.</p>
+    </div>
+  </div>
+
+  <!-- How to Use It -->
+  <div class="section">
+    <div class="section-label">02 — How to Use It</div>
+    <h2>Daily Operation</h2>
+    <p>Most automations fire without any action from you. For automations that require a human decision first, use the <strong>Practice Pilot Trigger Form</strong>.</p>
+
+    <table class="info-table">
+      <tr>
+        <td>Intake form submitted</td>
+        <td>Fires automatically. No action needed. Check your internal alert email and review the intake tracking sheet.</td>
+      </tr>
+      <tr>
+        <td>New client confirmed</td>
+        <td>Submit Trigger Form → "New Client Confirmed." Onboarding sequence fires automatically.</td>
+      </tr>
+      <tr>
+        <td>Client no-shows</td>
+        <td>Submit Trigger Form → "No-Show." Select first appointment checkbox if applicable. Follow-up sequence fires automatically.</td>
+      </tr>
+      <tr>
+        <td>Client cancels</td>
+        <td>Submit Trigger Form → "Cancellation." Select cancel type. Correct sequence fires automatically.</td>
+      </tr>
+      <tr>
+        <td>Client discharges</td>
+        <td>Submit Trigger Form → "Client Discharge." Select discharge type. Note: Practice Initiated track holds for your review before sending.</td>
+      </tr>
+      <tr>
+        <td>Slot opens for waitlist</td>
+        <td>Submit Trigger Form → "Slot Available." Enter clinician, day/time, and insurance. Waitlist outreach fires after your review.</td>
+      </tr>
+    </table>
+
+    <br>
+    <div class="warning-box">
+      <p><strong>Trigger Form link:</strong> <span contenteditable="true" style="color: var(--text);">Add your Google Form URL here</span></p>
+    </div>
+  </div>
+
+  <!-- Your Stack -->
+  <div class="section">
+    <div class="section-label">03 — Your Stack</div>
+    <h2>What's Running and Where</h2>
+
+    <table class="info-table">
+      <tr>
+        <td>Intake form</td>
+        <td contenteditable="true" style="color: var(--text-dim);">Jotform — link here</td>
+      </tr>
+      <tr>
+        <td>Automation engine</td>
+        <td>Google Apps Script — attached to your Practice Pilot sheet</td>
+      </tr>
+      <tr>
+        <td>Tracking sheet</td>
+        <td contenteditable="true" style="color: var(--text-dim);">Google Sheets — link here</td>
+      </tr>
+      <tr>
+        <td>Client folder root</td>
+        <td contenteditable="true" style="color: var(--text-dim);">Google Drive — folder link here</td>
+      </tr>
+      <tr>
+        <td>Email sends from</td>
+        <td contenteditable="true" style="color: var(--text-dim);">admin@yourpractice.com</td>
+      </tr>
+      <tr>
+        <td>BAA status</td>
+        <td contenteditable="true" style="color: var(--text-dim);">Google Workspace Business — BAA active ✓</td>
+      </tr>
+      <tr>
+        <td>Script version</td>
+        <td contenteditable="true" style="color: var(--text-dim);">v1.0 — delivered April 2026</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Maintenance -->
+  <div class="section">
+    <div class="section-label">04 — Maintenance</div>
+    <h2>Keeping It Running</h2>
+    <p>This system is designed to run without ongoing maintenance. Here's what to watch for:</p>
+
+    <div class="maintenance-item">
+      <div class="maint-freq">Monthly</div>
+      <div class="maint-text">
+        <strong>Check your tracking sheets</strong>
+        <p>Scan intake, no-show, and discharge sheets to confirm rows are populating correctly. If a row stops appearing, the form may have been modified.</p>
+      </div>
+    </div>
+    <div class="maintenance-item">
+      <div class="maint-freq">Quarterly</div>
+      <div class="maint-text">
+        <strong>Review automated email copy</strong>
+        <p>Read through your welcome, onboarding, and follow-up emails. Update practice details, addresses, or clinician names if anything has changed.</p>
+      </div>
+    </div>
+    <div class="maintenance-item">
+      <div class="maint-freq">Annually</div>
+      <div class="maint-text">
+        <strong>Verify BAA is still active</strong>
+        <p>Confirm your Google Workspace BAA or M365 BAA is current. BAAs don't expire automatically but your subscription must remain active.</p>
+      </div>
+    </div>
+    <div class="maintenance-item">
+      <div class="maint-freq">As needed</div>
+      <div class="maint-text">
+        <strong>Adding a new clinician</strong>
+        <p>Update the clinician dropdown in your Trigger Form and the clinician list in the Apps Script CONFIG block. No logic changes needed.</p>
+      </div>
+    </div>
+    <div class="maintenance-item">
+      <div class="maint-freq">As needed</div>
+      <div class="maint-text">
+        <strong>If something stops working</strong>
+        <p>Check that no one has modified column order in the tracking sheet or rebuilt the Trigger Form. Column index changes are the most common cause of automation breaks. Contact joe@privatepraxis.co within your support window.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- What's Not Automated -->
+  <div class="section">
+    <div class="section-label">05 — Manual Steps</div>
+    <h2>What Stays Human — By Design</h2>
+    <ul class="checklist">
+      <li>Scheduling decisions — clinical fit, availability, and clinician match always require human judgment</li>
+      <li>EHR data entry — client record creation and clinical documentation stay inside your EHR</li>
+      <li>Practice-initiated discharge review — Track C discharge emails hold for your approval before sending</li>
+      <li>Waitlist match review — you approve before the slot offer email fires</li>
+      <li>Insurance verification — this lives inside your EHR or billing workflow</li>
+    </ul>
+  </div>
+
+  <!-- Support -->
+  <div class="section">
+    <div class="section-label">06 — Support</div>
+    <h2>Your Support Window</h2>
+    <p>You have a <strong>30-day support window</strong> from delivery. During this time, bug fixes and adjustments are included at no charge. New features or scope additions are quoted separately.</p>
+
+    <div class="support-card">
+      <div class="support-item">
+        <label>Support contact</label>
+        <div class="val"><a href="mailto:joe@privatepraxis.co">joe@privatepraxis.co</a></div>
+      </div>
+      <div class="support-item">
+        <label>Response time</label>
+        <div class="val">Within 48 business hours</div>
+      </div>
+      <div class="support-item">
+        <label>Support window</label>
+        <div class="val editable" contenteditable="true" data-ph="30 days from delivery"></div>
+      </div>
+      <div class="support-item">
+        <label>After support window</label>
+        <div class="val">Fixes quoted per project</div>
+      </div>
+    </div>
+
+    <br>
+    <div class="warning-box">
+      <p><strong>What's covered:</strong> Bugs, broken triggers, email delivery issues, column mapping problems. <strong>What's not covered:</strong> New automations, changes to scope, or issues caused by modifications to the sheet or form after delivery.</p>
+    </div>
+  </div>
+
+  <!-- PHI Map -->
+  <div class="section">
+    <div class="section-label">07 — Compliance</div>
+    <h2>PHI Workflow Map</h2>
+    <p>This documents which workflows touch protected health information and which tools handle that data. Keep this on file for compliance purposes.</p>
+
+    <table class="info-table">
+      <tr>
+        <td>Internal alert emails</td>
+        <td>No PHI — alert contains only "New intake submitted." No client details. Any tool acceptable.</td>
+      </tr>
+      <tr>
+        <td>Welcome + onboarding emails</td>
+        <td>Contains client first name only. Sent via Gmail under Google Workspace BAA. ✓ Compliant</td>
+      </tr>
+      <tr>
+        <td>Client folder creation</td>
+        <td>Folder named with client last name. Stored in Google Drive under Workspace BAA. ✓ Compliant</td>
+      </tr>
+      <tr>
+        <td>Intake tracking sheet</td>
+        <td>Contains client name, email, referral source. Google Sheets under Workspace BAA. ✓ Compliant</td>
+      </tr>
+      <tr>
+        <td>No-show / discharge tracking</td>
+        <td>Contains client name, status, dates. Google Sheets under Workspace BAA. ✓ Compliant</td>
+      </tr>
+      <tr>
+        <td>Intake form submissions</td>
+        <td contenteditable="true" style="color:var(--text-dim)">Jotform — BAA active on paid plan. ✓ Compliant</td>
+      </tr>
+      <tr>
+        <td>Zapier / Make.com</td>
+        <td>Not used. Neither tool offers an accessible BAA for small practices.</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Acknowledgment -->
+  <div class="section">
+    <div class="section-label">08 — Acknowledgment</div>
+    <h2>Confirm Receipt</h2>
+
+    <div class="ack-box">
+      <p>By signing below, you confirm that the automation system has been delivered as described in the original proposal, that you have received the Loom walkthrough, and that the 30-day support window has begun.</p>
+
+      <div class="sig-grid">
+        <div class="sig-group">
+          <label>Client — Practice Owner</label>
+          <div class="sig-line"></div>
+          <div class="sig-name-label" contenteditable="true">Name / Date</div>
+        </div>
+        <div class="sig-group">
+          <label>Practice Pilot</label>
+          <div class="sig-line"></div>
+          <div class="sig-name-label">Joe Lenhoff, LCSW-S / Date</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-text">Practice Pilot · <span>A Private Praxis Product</span> · Houston Heights Consulting LLC</div>
+    <div class="footer-text"><span>joe@privatepraxis.co · practicepilot.app</span></div>
+  </div>
+
+</div>
+
+<script>
+  function toggleCard(header) {
+    const body = header.nextElementSibling;
+    const toggle = header.querySelector('.auto-card-toggle');
+    body.classList.toggle('open');
+    toggle.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
