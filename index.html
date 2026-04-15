@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Pilot — Automation Built for Therapy Practices</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --card: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --white: #f2ede8;
+    --muted: rgba(242,237,232,0.45);
+    --orange: #ff6b35;
+    --orange-dim: rgba(255,107,53,0.1);
+    --orange-glow: rgba(255,107,53,0.05);
+    --teal: #2dd4bf;
+    --teal-dim: rgba(45,212,191,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Karla', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* Diagonal stripe texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,107,53,0.015) 40px,
+      rgba(255,107,53,0.015) 41px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  section, nav, footer { position: relative; z-index: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(13,13,13,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    animation: slideDown 0.6s ease both;
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .logo span { color: var(--orange); }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--orange) !important;
+    color: #000 !important;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    transition: all 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.85 !important; }
+
+  .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    padding: 10rem 5rem 6rem;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    max-width: 1300px;
+    margin: 0 auto;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--orange-dim);
+    border: 1px solid rgba(255,107,53,0.2);
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 .accent { color: var(--orange); }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--muted);
+    max-width: 480px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: #000;
+    padding: 1rem 2.5rem;
+    font-family: 'Karla', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .btn-primary:hover::after { transform: translateX(0); }
+
+  .btn-outline {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .btn-outline:hover { color: var(--white); border-color: var(--white); }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    position: relative;
+  }
+
+  .flow-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+  }
+
+  .flow-card::before {
+    content: 'LIVE AUTOMATION FLOW';
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    color: var(--orange);
+    display: block;
+    margin-bottom: 1.5rem;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--border);
+    animation: flowPulse 3s infinite;
+  }
+
+  .flow-step:last-child { border-bottom: none; }
+
+  .flow-step:nth-child(2) { animation-delay: 0.5s; }
+  .flow-step:nth-child(3) { animation-delay: 1s; }
+  .flow-step:nth-child(4) { animation-delay: 1.5s; }
+  .flow-step:nth-child(5) { animation-delay: 2s; }
+  .flow-step:nth-child(6) { animation-delay: 2.5s; }
+
+  @keyframes flowPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  .step-indicator {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--orange-dim);
+    border: 1px solid rgba(255,107,53,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .step-info strong {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+  }
+
+  .step-info span {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .step-check {
+    margin-left: auto;
+    color: var(--teal);
+    font-size: 0.85rem;
+  }
+
+  .time-saved {
+    background: var(--orange-dim);
+    border: 1px solid rgba(255,107,53,0.2);
+    padding: 1rem 1.5rem;
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .time-saved span:first-child {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .time-saved strong {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    color: var(--orange);
+  }
+
+  /* CREDIBILITY BAR */
+  .cred-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 5rem;
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .cred-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .cred-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  .cred-item span {
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  /* PROBLEM */
+  .problem {
+    padding: 8rem 5rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7rem;
+    align-items: start;
+  }
+
+  .section-tag {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    font-weight: 600;
+    margin-bottom: 1.2rem;
+  }
+
+  .problem h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.8rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .problem p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .pain-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .pain-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 2px solid rgba(255,107,53,0.4);
+    padding: 1.2rem 1.5rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--muted);
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .pain-card:hover {
+    border-left-color: var(--orange);
+    color: var(--white);
+  }
+
+  /* SERVICES */
+  .services {
+    padding: 6rem 5rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .services-inner { max-width: 1300px; margin: 0 auto; }
+
+  .services-header {
+    margin-bottom: 4rem;
+  }
+
+  .services-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .services-header p { color: var(--muted); font-size: 0.95rem; }
+
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .tier {
+    background: var(--bg);
+    padding: 2.5rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .tier:hover { background: var(--card); }
+
+  .tier-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  .tier h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .tier-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--orange);
+    margin: 1.5rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .tier-price span {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 300;
+    font-family: 'Karla', sans-serif;
+  }
+
+  .tier-desc {
+    font-size: 0.83rem;
+    line-height: 1.7;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .tier-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .tier-list li {
+    font-size: 0.78rem;
+    color: var(--muted);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .tier-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--orange);
+    font-size: 0.7rem;
+  }
+
+  /* HIPAA */
+  .hipaa {
+    margin: 0 5rem;
+    background: var(--teal-dim);
+    border: 1px solid rgba(45,212,191,0.2);
+    padding: 3.5rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+    transform: translateY(-2rem);
+    position: relative;
+    z-index: 2;
+  }
+
+  .hipaa h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.8rem;
+    color: var(--teal);
+  }
+
+  .hipaa p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .hipaa-badge {
+    background: rgba(45,212,191,0.1);
+    border: 1px solid rgba(45,212,191,0.3);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    min-width: 130px;
+  }
+
+  .hipaa-badge .big {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--teal);
+    display: block;
+  }
+
+  .hipaa-badge small {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* STACKS */
+  .stacks {
+    padding: 7rem 5rem 5rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .stacks h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .stacks-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 3rem; }
+
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .stack-card {
+    background: var(--bg);
+    padding: 2rem;
+    transition: background 0.2s;
+  }
+
+  .stack-card:hover { background: var(--card); }
+
+  .stack-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--orange);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+  }
+
+  .stack-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .stack-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.7rem;
+    padding: 0.25rem 0.7rem;
+    letter-spacing: 0.03em;
+  }
+
+  .stack-note {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ABOUT */
+  .about {
+    padding: 8rem 5rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .about-inner {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 7rem;
+    align-items: center;
+  }
+
+  .about h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .about p {
+    font-size: 0.93rem;
+    line-height: 1.9;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+  }
+
+  .about-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    padding: 2.5rem;
+  }
+
+  .about-card .name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .about-card .creds {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--orange);
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .cred-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .cred-list li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    line-height: 1.4;
+  }
+
+  .cred-list li::before {
+    content: '✓';
+    color: var(--orange);
+    font-size: 0.72rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+  }
+
+  /* CTA */
+  .final-cta {
+    padding: 10rem 5rem;
+    text-align: center;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .final-cta::before {
+    content: 'PILOT';
+    position: absolute;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22vw;
+    opacity: 0.025;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    white-space: nowrap;
+    letter-spacing: -0.05em;
+  }
+
+  .final-cta h2 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .final-cta h2 .accent { color: var(--orange); }
+
+  .final-cta p {
+    font-size: 1rem;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+    position: relative;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2.5rem 5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+  }
+
+  .footer-logo span { color: var(--orange); }
+
+  footer p { font-size: 0.72rem; color: var(--muted); opacity: 0.6; }
+
+  footer a {
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  footer a:hover { color: var(--orange); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 2rem 4rem; gap: 3rem; }
+    .cred-bar { padding: 1.5rem 2rem; gap: 2rem; flex-wrap: wrap; }
+    .problem { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 3rem; }
+    .services { padding: 4rem 2rem; }
+    .tiers { grid-template-columns: 1fr; }
+    .hipaa { margin: 0 2rem; grid-template-columns: 1fr; padding: 2.5rem; gap: 2rem; }
+    .stacks { padding: 5rem 2rem 3rem; }
+    .stack-grid { grid-template-columns: 1fr; }
+    .about { padding: 4rem 2rem; }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .final-cta { padding: 6rem 2rem; }
+    footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <div class="logo-icon">✈</div>
+    Practice <span>Pilot</span>
+  </div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#stacks">Platforms</a>
+    <a href="#about">About</a>
+    <a href="mailto:joe@privatepraxis.co" class="nav-cta">Book Free Audit</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">✈ HIPAA-Aware Practice Automation</div>
+    <h1>Your practice.<br><span class="accent">On autopilot.</span></h1>
+    <p class="hero-sub">Custom automation systems built for therapy practices — by a therapist who actually runs one. Stop doing $20/hour admin work. Get your time back.</p>
+    <div class="hero-actions">
+      <a href="mailto:joe@privatepraxis.co" class="btn-primary">Book a Free Audit</a>
+      <a href="#services" class="btn-outline">See what we build →</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="flow-card">
+      <div class="flow-step">
+        <div class="step-indicator">1</div>
+        <div class="step-info">
+          <strong>Client submits intake form</strong>
+          <span>Jotform, Google Forms, or your EHR</span>
+        </div>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-indicator">2</div>
+        <div class="step-info">
+          <strong>Welcome email sent automatically</strong>
+          <span>Gmail or Outlook — your stack</span>
+        </div>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-indicator">3</div>
+        <div class="step-info">
+          <strong>Client folder created</strong>
+          <span>Google Drive or OneDrive</span>
+        </div>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-indicator">4</div>
+        <div class="step-info">
+          <strong>Calendar invite sent</strong>
+          <span>First appointment confirmed</span>
+        </div>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="flow-step">
+        <div class="step-indicator">5</div>
+        <div class="step-info">
+          <strong>You get a 60-second alert</strong>
+          <span>New client is ready. That's it.</span>
+        </div>
+        <span class="step-check">✓</span>
+      </div>
+      <div class="time-saved">
+        <span>TIME SAVED PER NEW CLIENT</span>
+        <strong>45+ min</strong>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cred-bar">
+  <div class="cred-item"><div class="cred-dot"></div><span>LCSW-S Owned</span></div>
+  <div class="cred-item"><div class="cred-dot"></div><span>HIPAA-Aware Builds</span></div>
+  <div class="cred-item"><div class="cred-dot"></div><span>Google + Microsoft Stacks</span></div>
+  <div class="cred-item"><div class="cred-dot"></div><span>All Major EHRs</span></div>
+  <div class="cred-item"><div class="cred-dot"></div><span>Flat Fee — No Retainers</span></div>
+  <div class="cred-item"><div class="cred-dot"></div><span>Mac + Windows</span></div>
+</div>
+
+<section class="problem">
+  <div>
+    <p class="section-tag">The Problem</p>
+    <h2>You built a practice. Not an admin job.</h2>
+    <p>The average solo or small group practice owner spends 8–12 hours per week on tasks that could be fully automated. That's a session a day. Every single day.</p>
+    <p>Most automation tools aren't built for therapy practices — and most developers don't understand what HIPAA actually means for middleware. You end up with solutions that either don't work or create real compliance risk.</p>
+    <p>Practice Pilot is different because it's built by someone who runs the same kind of practice you do.</p>
+  </div>
+  <div class="pain-cards">
+    <div class="pain-card">Manually sending welcome emails after every new intake</div>
+    <div class="pain-card">Building client folders one by one in Drive or OneDrive</div>
+    <div class="pain-card">Chasing no-shows and manually filling cancellation slots</div>
+    <div class="pain-card">Copying referral info into spreadsheets by hand</div>
+    <div class="pain-card">Answering the same intake questions over and over by email</div>
+    <div class="pain-card">Wondering if your automation tools are actually HIPAA compliant</div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <p class="section-tag">What We Build</p>
+      <h2>Three tiers. All flat fee.</h2>
+      <p>No retainers. No monthly fees. No surprise invoices. You pay once, it runs forever.</p>
+    </div>
+    <div class="tiers">
+      <div class="tier">
+        <p class="tier-num">TIER 01 — STARTER</p>
+        <h3>Single Automation</h3>
+        <div class="tier-price">$500 <span>– $1,500</span></div>
+        <p class="tier-desc">One well-built automation that solves your most painful recurring task. Scoped, built, tested, handed off.</p>
+        <ul class="tier-list">
+          <li>Intake flow or cancellation workflow</li>
+          <li>Works on your existing stack</li>
+          <li>HIPAA compliance review included</li>
+          <li>Loom walkthrough on delivery</li>
+          <li>30-day support window</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <p class="tier-num">TIER 02 — PRACTICE PACK</p>
+        <h3>Connected System</h3>
+        <div class="tier-price">$2,500 <span>– $4,500</span></div>
+        <p class="tier-desc">3–5 automations built as a connected system — intake, follow-up, cancellation, internal alerts.</p>
+        <ul class="tier-list">
+          <li>Full intake → onboarding flow</li>
+          <li>Cancellation + waitlist automation</li>
+          <li>Referral source tracking</li>
+          <li>Internal team alerts</li>
+          <li>60-day support window</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <p class="tier-num">TIER 03 — FULL BUILD</p>
+        <h3>Complete Stack</h3>
+        <div class="tier-price">$6,000 <span>– $10,000</span></div>
+        <p class="tier-desc">Everything automated. Plus an AI assistant trained on your practice policies.</p>
+        <ul class="tier-list">
+          <li>Complete admin automation stack</li>
+          <li>AI FAQ + intake screening bot</li>
+          <li>Custom reporting dashboard</li>
+          <li>Staff onboarding documentation</li>
+          <li>90-day support + one tune-up</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="hipaa">
+  <div>
+    <h3>Most automation builders don't know what HIPAA means for middleware.</h3>
+    <p>Zapier and Make.com are not HIPAA-compliant by default. Every Practice Pilot build starts with a PHI audit — identifying which workflows touch protected data and routing them through compliant tools only. Power Automate with M365 BAA for Microsoft stacks. Google Workspace with BAA for Google stacks. Your compliance is never an afterthought.</p>
+  </div>
+  <div class="hipaa-badge">
+    <span class="big">BAA</span>
+    <small>REQUIRED ON<br>EVERY PHI BUILD</small>
+  </div>
+</div>
+
+<section class="stacks" id="stacks">
+  <p class="section-tag">Platform Flexibility</p>
+  <h2>Your stack. Not ours.</h2>
+  <p class="stacks-sub">Google, Microsoft, or mixed — every build is scoped to what you already use.</p>
+  <div class="stack-grid">
+    <div class="stack-card">
+      <p class="stack-label">GOOGLE STACK</p>
+      <h4>Gmail + Google Workspace</h4>
+      <div class="stack-tags">
+        <span class="tag">Gmail</span>
+        <span class="tag">Google Calendar</span>
+        <span class="tag">Google Drive</span>
+        <span class="tag">Sheets</span>
+        <span class="tag">Apps Script</span>
+      </div>
+      <p class="stack-note">Google signs a BAA for Workspace Business/Enterprise. Clean compliance pathway. Common on Mac-based practices.</p>
+    </div>
+    <div class="stack-card">
+      <p class="stack-label">MICROSOFT STACK</p>
+      <h4>Outlook + Microsoft 365</h4>
+      <div class="stack-tags">
+        <span class="tag">Outlook</span>
+        <span class="tag">Power Automate</span>
+        <span class="tag">OneDrive</span>
+        <span class="tag">Excel Online</span>
+        <span class="tag">Teams</span>
+      </div>
+      <p class="stack-note">M365 Business BAA available. Power Automate is the HIPAA-compliant automation layer. Common on Windows-based practices.</p>
+    </div>
+    <div class="stack-card">
+      <p class="stack-label">EHR LAYER</p>
+      <h4>All Major Platforms</h4>
+      <div class="stack-tags">
+        <span class="tag">SimplePractice</span>
+        <span class="tag">TherapyNotes</span>
+        <span class="tag">Sessions Health</span>
+        <span class="tag">TheraNest</span>
+        <span class="tag">Jane App</span>
+      </div>
+      <p class="stack-note">We build around your EHR, not inside it. The automation lives in the intake and communication layer where the real time loss happens.</p>
+    </div>
+    <div class="stack-card">
+      <p class="stack-label">INTAKE LAYER</p>
+      <h4>Platform-Agnostic Forms</h4>
+      <div class="stack-tags">
+        <span class="tag">Jotform</span>
+        <span class="tag">Typeform</span>
+        <span class="tag">Google Forms</span>
+        <span class="tag">MS Forms</span>
+      </div>
+      <p class="stack-note">The form layer is where automation starts. We match this to your stack and compliance requirements. Jotform offers BAA on paid plans.</p>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div>
+      <p class="section-tag">Why It Matters</p>
+      <h2>Built by someone running the same practice.</h2>
+      <p>I'm not a developer who learned about therapy practices from a blog post. I own and operate Houston Heights Therapy — a group practice in Houston. I supervise associates, deal with EHRs, navigate insurance billing, and manage intake bottlenecks every single week.</p>
+      <p>That means I scope automation builds differently. I know what a 72-hour note policy means. I know the difference between a BAA and a data processing agreement. I know which workflows actually hurt your time and which ones are fine as-is.</p>
+      <p>You're not paying for code. You're paying for someone who already solved this problem at their own practice.</p>
+    </div>
+    <div class="about-card">
+      <p class="name">Joe Lenhoff</p>
+      <p class="creds">LCSW-S · Group Practice Owner · Builder</p>
+      <ul class="cred-list">
+        <li>Owner, Houston Heights Therapy (group practice)</li>
+        <li>Licensed Clinical Social Worker — Supervisor</li>
+        <li>Neurodivergent-affirming, LGBTQ+ specialist</li>
+        <li>Runs the automations he builds for you</li>
+        <li>Knows HIPAA compliance for middleware</li>
+        <li>Part of Private Praxis — tools for practice owners</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <h2>Ready to <span class="accent">fly</span><br>the practice?</h2>
+  <p>Start with a free 30-minute audit. We'll map your workflow, identify your biggest time losses, and scope exactly what a build would cost.</p>
+  <a href="mailto:joe@privatepraxis.co" class="btn-primary">Book Your Free Audit →</a>
+</section>
+
+<footer>
+  <div class="footer-logo">Practice <span>Pilot</span></div>
+  <p>Part of <a href="https://privatepraxis.co">Private Praxis</a> · Houston Heights Consulting LLC · Houston, TX</p>
+  <p>© 2026 Practice Pilot</p>
+</footer>
+
+</body>
+</html>
