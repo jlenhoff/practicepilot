@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Practice Pilot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #0d9488;
+      --teal-light: #14b8a6;
+      --teal-dim: rgba(13,148,136,0.12);
+      --ink: #0f1a19;
+      --ink-mid: #2d3f3d;
+      --ink-muted: #5a706d;
+      --ink-faint: #8fa3a0;
+      --surface: #f7faf9;
+      --white: #ffffff;
+      --border: #e0eae8;
+      --rule: #d1e4e1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(247,250,249,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 18px;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo span { color: var(--teal); }
+
+    .nav-back {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--teal);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-back:hover { text-decoration: underline; }
+
+    /* HERO */
+    .hero {
+      margin-top: 60px;
+      padding: 80px 40px 60px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 60px;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: var(--teal-dim);
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(36px, 5vw, 54px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .hero-meta {
+      font-size: 14px;
+      color: var(--ink-muted);
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    .hero-meta strong { color: var(--ink-mid); font-weight: 500; }
+
+    /* LAYOUT */
+    .layout {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 40px 120px;
+    }
+
+    /* SECTION */
+    .section {
+      margin-bottom: 56px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section-number {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+
+    .section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 20px;
+      line-height: 1.25;
+    }
+
+    .section p {
+      font-size: 15px;
+      color: var(--ink-mid);
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .section p:last-child { margin-bottom: 0; }
+
+    .section ul {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .section ul li {
+      font-size: 15px;
+      color: var(--ink-mid);
+      padding: 8px 0 8px 20px;
+      position: relative;
+      border-bottom: 1px solid var(--rule);
+      line-height: 1.7;
+    }
+
+    .section ul li:last-child { border-bottom: none; }
+
+    .section ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 18px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    /* CALLOUT */
+    .callout {
+      background: var(--teal-dim);
+      border-left: 3px solid var(--teal);
+      border-radius: 0 8px 8px 0;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      font-size: 14px;
+      color: var(--ink-mid);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .callout strong { color: var(--teal); }
+
+    /* CONTACT CARD */
+    .contact-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-top: 24px;
+    }
+
+    .contact-card .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 16px;
+    }
+
+    .contact-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contact-row a {
+      font-size: 15px;
+      color: var(--teal);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-row a:hover { text-decoration: underline; }
+
+    .contact-row span {
+      font-size: 14px;
+      color: var(--ink-muted);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      padding: 40px;
+      text-align: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--ink-faint);
+      line-height: 1.7;
+    }
+
+    footer a { color: var(--teal-light); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    .footer-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .footer-logo span { color: var(--teal-light); }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      nav { padding: 0 20px; }
+      .hero { padding: 60px 20px 40px; }
+      .layout { padding: 0 20px 80px; }
+      footer { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="https://practicepilot.app" class="nav-logo">Practice<span>Pilot</span></a>
+  <a href="https://practicepilot.app" class="nav-back">← Back to Practice Pilot</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Legal</div>
+  <h1>Privacy Policy</h1>
+  <div class="hero-meta">
+    <span><strong>Effective:</strong> April 16, 2026</span>
+    <span><strong>Operator:</strong> Houston Heights Consulting LLC</span>
+    <span><strong>Product:</strong> Practice Pilot</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <div class="section">
+    <div class="section-number">Overview</div>
+    <h2>Our Commitment to Your Privacy</h2>
+    <p>Practice Pilot is a marketing automation platform built for therapy practice owners. It is operated by Houston Heights Consulting LLC, a Texas limited liability company.</p>
+    <p>This Privacy Policy explains what information we collect, how we use it, and your rights regarding that information. We built Practice Pilot to handle sensitive business data responsibly. We do not sell your data, and we do not share it with third parties for advertising purposes.</p>
+    <div class="callout">
+      <p><strong>In plain terms:</strong> Practice Pilot uses your data only to run the automations you set up. Your practice information, your clients' information, and your social content stay yours.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 1</div>
+    <h2>Information We Collect</h2>
+    <p>We collect information necessary to operate the Practice Pilot platform and its automations. This includes:</p>
+    <ul>
+      <li><strong>Account information</strong> — your name, email address, and practice name provided during registration</li>
+      <li><strong>Practice configuration data</strong> — information you enter to configure your automations, including practice details, specialties, tone preferences, and content settings</li>
+      <li><strong>Social media account data</strong> — when you connect Facebook or Instagram accounts, we receive OAuth tokens and profile identifiers necessary to publish content on your behalf</li>
+      <li><strong>Referral partner data</strong> — names, email addresses, roles, and organizations you enter into the referral partner system</li>
+      <li><strong>Generated content</strong> — social posts, Google Business Profile posts, and outreach emails generated by the platform on your behalf</li>
+      <li><strong>Usage and log data</strong> — system logs, automation run history, and error logs used to maintain platform reliability</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 2</div>
+    <h2>How We Use Your Information</h2>
+    <p>We use the information we collect exclusively to operate and improve Practice Pilot. Specifically:</p>
+    <ul>
+      <li>To generate and publish social media content to your connected Facebook Page and Instagram account</li>
+      <li>To generate and publish Google Business Profile posts on your behalf</li>
+      <li>To send referral partner outreach emails from your designated practice email address</li>
+      <li>To log automation activity and provide you with reporting via your connected Google Sheet</li>
+      <li>To send you system notifications and content previews via email</li>
+      <li>To troubleshoot errors and maintain platform reliability</li>
+    </ul>
+    <p>We do not use your data for advertising, profiling, or any purpose unrelated to operating the services you have configured.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 3</div>
+    <h2>Meta Platform Data</h2>
+    <p>Practice Pilot integrates with Meta's platforms (Facebook and Instagram) through the Meta Graph API. When you connect your Facebook Page or Instagram Business Account to Practice Pilot:</p>
+    <ul>
+      <li>We request only the permissions required to publish content on your behalf — specifically <code>instagram_content_publish</code>, <code>instagram_basic</code>, <code>pages_manage_posts</code>, and <code>pages_read_engagement</code></li>
+      <li>Access tokens are stored securely and used only to publish content you have authorized through the platform</li>
+      <li>We do not access your personal Facebook profile, friends list, messages, or any data beyond what is required for content publishing</li>
+      <li>We do not sell, transfer, or share Meta platform data with any third party</li>
+      <li>You may revoke Practice Pilot's access to your Meta accounts at any time through your Facebook Settings → Apps and Websites</li>
+    </ul>
+    <div class="callout">
+      <p><strong>Meta compliance note:</strong> Practice Pilot's use of Meta platform data complies with the <a href="https://developers.facebook.com/terms/" style="color:var(--teal);">Meta Platform Terms</a> and <a href="https://developers.facebook.com/devpolicy/" style="color:var(--teal);">Meta Developer Policies</a>. We do not use Meta data for any purpose prohibited by those policies.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 4</div>
+    <h2>Third-Party Services</h2>
+    <p>Practice Pilot integrates with the following third-party services to deliver its functionality:</p>
+    <ul>
+      <li><strong>Anthropic Claude API</strong> — used to generate social media content, Google Business Profile posts, and referral outreach emails. Content prompts and generated text are processed by Anthropic's API. Anthropic's privacy policy applies to this processing.</li>
+      <li><strong>Meta Graph API</strong> — used to publish content to your Facebook Page and Instagram Business Account.</li>
+      <li><strong>Google Apps Script and Google Sheets</strong> — the platform runs on Google's infrastructure. Your configuration and content logs are stored in a Google Sheet in your own Google account.</li>
+      <li><strong>Gmail / Google Workspace</strong> — used to send referral outreach emails and system notifications from your configured practice email address.</li>
+    </ul>
+    <p>We do not integrate with advertising networks, data brokers, or analytics platforms that track your users.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 5</div>
+    <h2>Data Storage and Security</h2>
+    <p>Practice Pilot is architected so that your data stays primarily within your own Google Workspace. Your practice configuration, content logs, referral partner lists, and outreach history are stored in a Google Sheet that lives in your Google account — not on our servers.</p>
+    <p>API keys and access tokens are stored as Google Apps Script Script Properties, which are encrypted at rest by Google and accessible only within your script environment.</p>
+    <p>We take reasonable technical and organizational measures to protect any data that passes through our systems. However, no transmission over the internet is completely secure, and we cannot guarantee absolute security.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 6</div>
+    <h2>Data Retention</h2>
+    <p>Because your data is stored in your own Google Sheet, you control retention directly. You may delete any row, tab, or the entire spreadsheet at any time.</p>
+    <p>Access tokens and API keys stored in Script Properties can be deleted through the Apps Script Project Settings at any time.</p>
+    <p>If you discontinue use of Practice Pilot, we recommend revoking the app's access to your Meta accounts and deleting any stored API keys from your Script Properties.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 7</div>
+    <h2>Your Rights</h2>
+    <p>You have the right to:</p>
+    <ul>
+      <li>Access the data Practice Pilot holds about you or your practice</li>
+      <li>Correct inaccurate data in your practice configuration</li>
+      <li>Delete your data by removing it from your Google Sheet and revoking connected app access</li>
+      <li>Revoke Practice Pilot's access to your Meta accounts at any time</li>
+      <li>Request information about how your data is used by contacting us directly</li>
+    </ul>
+    <p>If you are located in the European Economic Area, United Kingdom, or California, additional rights may apply under GDPR, UK GDPR, or CCPA respectively. Please contact us to exercise those rights.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 8</div>
+    <h2>Children's Privacy</h2>
+    <p>Practice Pilot is a business-to-business platform intended for use by therapy practice owners and healthcare professionals. It is not directed at children under the age of 13, and we do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 9</div>
+    <h2>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time as the platform evolves. When we make material changes, we will update the effective date at the top of this page. We encourage you to review this policy periodically.</p>
+    <p>Continued use of Practice Pilot after changes are posted constitutes your acceptance of the updated policy.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-number">Section 10</div>
+    <h2>Contact Us</h2>
+    <p>If you have questions about this Privacy Policy or how Practice Pilot handles your data, please contact us:</p>
+    <div class="contact-card">
+      <div class="label">Practice Pilot · Privacy Contact</div>
+      <div class="contact-row">
+        <a href="mailto:joe@privatepraxis.co">joe@privatepraxis.co</a>
+        <span>Houston Heights Consulting LLC</span>
+        <span>Houston, Texas</span>
+        <a href="https://practicepilot.app">practicepilot.app</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-logo">Practice<span>Pilot</span></div>
+  <p>
+    A product of Houston Heights Consulting LLC · Houston, Texas<br>
+    <a href="https://practicepilot.app">practicepilot.app</a> · <a href="mailto:joe@privatepraxis.co">joe@privatepraxis.co</a>
+  </p>
+  <p style="margin-top:12px;">© 2026 Houston Heights Consulting LLC. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
