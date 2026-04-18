@@ -1,33 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
   <defs>
-    <linearGradient id="bg0" x1="0%" y1="0%" 
-                    x2="100%" y2="100%">
+    <linearGradient id="bg2" x1="0%" y1="0%" 
+                    x2="0%" y2="100%">
       <stop offset="0%" stop-color="#1A9E9E"/>
-      <stop offset="100%" stop-color="#14706E"/>
+      <stop offset="100%" stop-color="#157A7A"/>
     </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect width="1080" height="1080" fill="url(#bg0)"/>
+  <rect width="1080" height="1080" fill="url(#bg2)"/>
 
-  <!-- Decorations -->
   
-      <circle cx="0" cy="0" r="180" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
-      <circle cx="1080" cy="1080" r="220" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+      <text x="1000" y="1020" font-family="Georgia, serif" font-size="320" 
+            fill="rgba(255,255,255,0.06)" text-anchor="end">&#8220;</text>
+      <rect x="60" y="80" width="4" height="900" rx="2" fill="rgba(255,255,255,0.15)"/>
 
-  <!-- Pull quote -->
   <g>
-    <text x="540" y="455" 
+    <text x="100" y="455" 
            font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="normal"
-           fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">Your nervous system isn't broken ? it's</text>
-    <text x="540" y="517" 
+           fill="#FFFFFF" text-anchor="start" letter-spacing="0.5">Stay present and functional when</text>
+    <text x="100" y="517" 
            font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="normal"
-           fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">learning.</text>
+           fill="#FFFFFF" text-anchor="start" letter-spacing="0.5">things get difficult.</text>
   </g>
 
-  <!-- Footer -->
   <text x="540" y="1030" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="18" 
-        fill="#AADDDD" text-anchor="middle" letter-spacing="2">houstonheightstherapy.com</text>
+        fill="#99CCCC" text-anchor="middle" letter-spacing="2">houstonheightstherapy.com</text>
   <text x="540" y="1052" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="14" 
-        fill="#AADDDD" text-anchor="middle" letter-spacing="1">Houston Heights Therapy</text>
+        fill="#99CCCC" text-anchor="middle" letter-spacing="1">Houston Heights Therapy</text>
 </svg>
