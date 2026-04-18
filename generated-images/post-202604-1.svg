@@ -1,32 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
   <defs>
-    <linearGradient id="bg4" x1="0%" y1="0%" 
+    <linearGradient id="bg1" x1="0%" y1="0%" 
                     x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#F5E6E8"/>
-      <stop offset="100%" stop-color="#EDDADC"/>
+      <stop offset="0%" stop-color="#1B2A4A"/>
+      <stop offset="100%" stop-color="#142038"/>
     </linearGradient>
   </defs>
 
-  <!-- Background -->
-  <rect width="1080" height="1080" fill="url(#bg4)"/>
+  <rect width="1080" height="1080" fill="url(#bg1)"/>
 
-  <!-- Decorations -->
   
-      <line x1="0" y1="1080" x2="378" y2="0" stroke="rgba(176,112,128,0.1)" stroke-width="80"/>
+      <line x1="80" y1="70" x2="1000" y2="70" stroke="#1A9E9E" stroke-width="2" opacity="0.6"/>
+      <line x1="80" y1="1010" x2="1000" y2="1010" stroke="#1A9E9E" stroke-width="1" opacity="0.3"/>
 
-  <!-- Pull quote -->
   <g>
     <text x="540" y="455" 
            font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="normal"
-           fill="#4A3035" text-anchor="middle" letter-spacing="0.5">Something doesn&#39;t feel right &#8212;</text>
+           fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">Your nervous system isn&#39;t broken</text>
     <text x="540" y="517" 
            font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="normal"
-           fill="#4A3035" text-anchor="middle" letter-spacing="0.5">that&#39;s enough.</text>
+           fill="#FFFFFF" text-anchor="middle" letter-spacing="0.5">&#8212; it&#39;s learning.</text>
   </g>
 
-  <!-- Footer -->
   <text x="540" y="1030" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="18" 
-        fill="#9A7A80" text-anchor="middle" letter-spacing="2">houstonheightstherapy.com</text>
+        fill="#7799BB" text-anchor="middle" letter-spacing="2">houstonheightstherapy.com</text>
   <text x="540" y="1052" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="14" 
-        fill="#9A7A80" text-anchor="middle" letter-spacing="1">Houston Heights Therapy</text>
+        fill="#7799BB" text-anchor="middle" letter-spacing="1">Houston Heights Therapy</text>
 </svg>
