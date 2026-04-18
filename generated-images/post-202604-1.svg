@@ -18,7 +18,7 @@
   <g>
     <text x="540" y="455" 
            font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="normal"
-           fill="#4A3035" text-anchor="middle" letter-spacing="0.5">Something doesn&#39;t feel right, and</text>
+           fill="#4A3035" text-anchor="middle" letter-spacing="0.5">Something doesn&#39;t feel right &#8212;</text>
     <text x="540" y="517" 
            font-family="'Georgia', 'Times New Roman', serif" font-size="48" font-weight="normal"
            fill="#4A3035" text-anchor="middle" letter-spacing="0.5">that&#39;s enough.</text>
