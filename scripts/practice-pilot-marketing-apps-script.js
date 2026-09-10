@@ -1,6 +1,6 @@
 /**
  * ============================================================
- * PRACTICE PILOT — HHT MARKETING AUTOMATION v5.6
+ * PRACTICE PILOT — HHT MARKETING AUTOMATION v5.7
  * ============================================================
  *
  * Built by Practice Pilot (Houston Heights Consulting LLC)
@@ -13,6 +13,22 @@
  * 2. GBP Keeper — Weekly Google Business Profile post
  * 3. Referral Partner Outreach — Quarterly personalized emails
  * 4. Flyer Rotation — Weekly clinician/team flyer posts (Fridays)
+ *
+ * ============================================================
+ * v5.7 changes from v5.6
+ * ============================================================
+ * - CLINICIAN ONBOARDED: Thunder Chen joins at week 1 (priority
+ *   "urgent" — new hire needs clients).
+ * - ROTATION RENUMBERED 1-4 (thunder, team, hannah, ron).
+ * - Added CLINICIAN_FACTS.thunder (credential + schedule fact lock)
+ *   and postThunderWelcomeNow() — manual, out-of-band welcome post,
+ *   fact-gated like the scheduled path, does not touch the counter.
+ * - resetFlyerRotation() log text updated (week 1 is now "thunder").
+ *
+ * AFTER SAVING THIS FILE, RUN IN THIS ORDER:
+ *   1. validateAllFlyers()    -> expect all clean
+ *   2. resetFlyerRotation()   -> pointer lands on week 1 (thunder)
+ *   3. viewFlyerRotation()    -> expect week1=thunder, no mismatches
  *
  * ============================================================
  * v5.6 changes from v5.5
@@ -299,6 +315,10 @@ function extractClaudeText_(data) {
 // credential or schedule claims, so there is nothing to lock.
 
 const CLINICIAN_FACTS = {
+  thunder: {
+    credentialLine: "Thunder Chen, LMSW",
+    daysLine: "Tuesday, Thursday, and Friday"
+  },
   hannah: {
     credentialLine: "Hannah Drury, LMSW",
     daysLine: "Tuesday through Friday"
@@ -393,18 +413,24 @@ const FLYER_CONFIG = {
   rotation: [
     {
       week: 1,
+      name: "thunder",
+      priority: "urgent", // new hire needs clients
+      caption: "We're growing. Meet Thunder Chen, LMSW — the newest therapist at Houston Heights Therapy. Thunder works with teens and adults navigating trauma, anxiety, ADHD, neurodivergence, and questions of identity, and brings a queer- and neurodivergent-affirming, trauma-informed lens to the work. Drawing on person-centered, relational, and motivational approaches — plus experience facilitating The Daring Way™ and supporting 12-step recovery — he creates a collaborative space where you don't have to do it alone. Now accepting new clients Tuesday, Thursday, and Friday, with daytime and evening slots, in-person in Houston Heights & telehealth across Texas. Free 15-minute intro call. Link in bio to get started."
+    },
+    {
+      week: 2,
       name: "team",
       priority: "brand",
       caption: "Real healing for real people. Houston Heights Therapy serves adults, adolescents, and couples navigating trauma, anxiety, life transitions, and the work of becoming who they really are. We use IFS, EMDR, CBT, and trauma-informed approaches — no toxic positivity, no generic advice. Currently accepting new clients for in-person sessions in Houston Heights and telehealth across Texas. Link in bio."
     },
     {
-      week: 2,
+      week: 3,
       name: "hannah",
       priority: "urgent",
       caption: "Hannah Drury, LMSW, works with adults and adolescents healing from trauma, managing anxiety, and navigating life transitions. She draws on IFS, CBT, and somatic approaches to help clients reconnect with their bodies and trust their own wisdom. Hannah is currently accepting new clients — Tuesday through Friday afternoons and evenings, in-person in Houston Heights & telehealth across Texas. She also facilitates our Seeking Safety group for trauma and substance use. Link in bio."
     },
     {
-      week: 3,
+      week: 4,
       name: "ron",
       priority: "maintenance",
       caption: "Ron Youngblut, LMSW, specializes in helping adults navigate anxiety, depression, and major life transitions. With a direct, solution-focused approach rooted in CBT and mindfulness, Ron creates a space where clients can process challenges without judgment and build practical skills for moving forward. Currently accepting a limited number of new clients — Monday through Wednesday, in-person in Houston Heights & telehealth across Texas. Link in bio."
@@ -935,7 +961,7 @@ function createMarketingTriggers() {
 // ============================================================
 
 function runSocialContentEngine() {
-  Logger.log("Social Content Engine v5.6: starting...");
+  Logger.log("Social Content Engine v5.7: starting...");
   recordRun_('runSocialContentEngine');
 
   const props = PropertiesService.getScriptProperties();
@@ -1843,6 +1869,59 @@ function postHannahFlyerNow() {
 }
 
 
+/**
+ * MANUAL: Post Thunder's welcome/announcement immediately.
+ * Does NOT advance the rotation counter. Fact-gated like the scheduled path.
+ */
+function postThunderWelcomeNow() {
+  Logger.log('=== MANUAL: Posting Thunder welcome ===');
+
+  const props = PropertiesService.getScriptProperties();
+  const metaToken = props.getProperty('META_PAGE_ACCESS_TOKEN');
+  const pageId = props.getProperty('META_PAGE_ID');
+  const igId = props.getProperty('META_INSTAGRAM_ID');
+
+  if (!metaToken || !pageId || !igId) {
+    Logger.log('ERROR: Meta credentials not configured');
+    return;
+  }
+
+  const health = checkMetaTokenHealth();
+  if (!health.ok) {
+    sendMarketingAlert("🔴 Thunder welcome ABORTED — token dead",
+      "Code " + health.code + ": " + health.message);
+    Logger.log('Aborted: token dead.');
+    return;
+  }
+
+  const thunderFlyer = FLYER_CONFIG.rotation.find(f => f.name === "thunder");
+  if (!thunderFlyer) {
+    Logger.log('ERROR: Thunder flyer config not found.');
+    return;
+  }
+
+  const factCheck = validateFlyerFacts_(thunderFlyer);
+  if (!factCheck.ok) {
+    sendMarketingAlert("🔴 Thunder welcome ABORTED — clinician fact mismatch",
+      factCheck.reason + "<br><br>Nothing was posted. Fix CLINICIAN_FACTS or the caption, then re-run.");
+    Logger.log('Aborted on fact check: ' + factCheck.reason);
+    return;
+  }
+
+  const fbImageUrl = `${FLYER_CONFIG.baseUrl}/flyer-thunder-light.png`;
+  const igImageUrl = `${FLYER_CONFIG.baseUrl}/flyer-thunder-dark.png`;
+
+  Logger.log('Posting Thunder welcome...');
+  const fbSuccess = postToFacebookFlyer(thunderFlyer.caption, fbImageUrl, pageId, metaToken);
+  const igSuccess = postToInstagramFlyer(thunderFlyer.caption, igImageUrl, igId, metaToken);
+
+  logFlyerPost({...thunderFlyer, week: 'welcome'}, fbSuccess, igSuccess);
+  sendFlyerNotificationEmail({...thunderFlyer, week: 'welcome'}, fbSuccess, igSuccess);
+
+  Logger.log(`Thunder welcome posted: FB ${fbSuccess ? 'SUCCESS' : 'FAILED'}, IG ${igSuccess ? 'SUCCESS' : 'FAILED'}`);
+}
+
+
 function getCurrentFlyerWeek() {
   const props = PropertiesService.getScriptProperties();
   const stored = props.getProperty('FLYER_ROTATION_WEEK');
@@ -2280,5 +2359,5 @@ function advanceFlyerRotation() {
 
 function resetFlyerRotation() {
   PropertiesService.getScriptProperties().setProperty('FLYER_ROTATION_WEEK', '1');
-  Logger.log('Flyer rotation reset to week 1 (team)');
+  Logger.log('Flyer rotation reset to week 1 (thunder)');
 }
