@@ -153,7 +153,7 @@ const MKTG_CONFIG = {
     "life transitions"
   ],
   modalities: ["IFS", "EMDR", "CBT", "trauma-informed approaches"],
-  clientTypes: ["adults", "adolescents", "couples"],
+  clientTypes: ["adults", "couples"],
   insuranceAccepted: "Aetna, Anthem BCBS, Cigna/Evernorth, Beacon, and self-pay",
 
   tone: "warm, direct, and human — we avoid jargon and toxic positivity",
@@ -321,7 +321,7 @@ const CLINICIAN_FACTS = {
   },
   hannah: {
     credentialLine: "Hannah Drury, LMSW",
-    daysLine: "Tuesday through Friday"
+    daysLine: "Monday through Friday"
   },
   ron: {
     credentialLine: "Ron Youngblut, LMSW",
@@ -415,19 +415,19 @@ const FLYER_CONFIG = {
       week: 1,
       name: "thunder",
       priority: "urgent", // new hire needs clients
-      caption: "We're growing. Meet Thunder Chen, LMSW — the newest therapist at Houston Heights Therapy. Thunder works with teens and adults navigating trauma, anxiety, ADHD, neurodivergence, and questions of identity, and brings a queer- and neurodivergent-affirming, trauma-informed lens to the work. Drawing on person-centered, relational, and motivational approaches — plus experience facilitating The Daring Way™ and supporting 12-step recovery — he creates a collaborative space where you don't have to do it alone. Now accepting new clients Tuesday, Thursday, and Friday, with daytime and evening slots, in-person in Houston Heights & telehealth across Texas. Free 15-minute intro call. Link in bio to get started."
+      caption: "We're growing. Meet Thunder Chen, LMSW — the newest therapist at Houston Heights Therapy. Thunder works with couples and adults navigating trauma, anxiety, ADHD, neurodivergence, and questions of identity, and brings a queer- and neurodivergent-affirming, trauma-informed lens to the work. Drawing on person-centered, relational, and motivational approaches — plus experience facilitating The Daring Way™ and supporting 12-step recovery — he creates a collaborative space where you don't have to do it alone. Now accepting new clients Tuesday, Thursday, and Friday, with daytime and evening slots, in-person in Houston Heights & telehealth across Texas. Free 15-minute intro call. Link in bio to get started."
     },
     {
       week: 2,
       name: "team",
       priority: "brand",
-      caption: "Real healing for real people. Houston Heights Therapy serves adults, adolescents, and couples navigating trauma, anxiety, life transitions, and the work of becoming who they really are. We use IFS, EMDR, CBT, and trauma-informed approaches — no toxic positivity, no generic advice. Currently accepting new clients for in-person sessions in Houston Heights and telehealth across Texas. Link in bio."
+      caption: "Real healing for real people. Houston Heights Therapy serves adults and couples navigating trauma, anxiety, life transitions, and the work of becoming who they really are. We use IFS, EMDR, CBT, and trauma-informed approaches — no toxic positivity, no generic advice. Currently accepting new clients for in-person sessions in Houston Heights and telehealth across Texas. Link in bio."
     },
     {
       week: 3,
       name: "hannah",
       priority: "urgent",
-      caption: "Hannah Drury, LMSW, works with adults and adolescents healing from trauma, managing anxiety, and navigating life transitions. She draws on IFS, CBT, and somatic approaches to help clients reconnect with their bodies and trust their own wisdom. Hannah is currently accepting new clients — Tuesday through Friday afternoons and evenings, in-person in Houston Heights & telehealth across Texas. She also facilitates our Seeking Safety group for trauma and substance use. Link in bio."
+      caption: "Hannah Drury, LMSW, works with adults and couples healing from trauma, managing anxiety, and navigating life transitions. She draws on CBT and somatic approaches to help clients reconnect with their bodies and trust their own wisdom. Hannah is currently accepting new clients — Tuesday through Friday afternoons and evenings, in-person in Houston Heights & telehealth across Texas. She also facilitates our Seeking Safety group for trauma and substance use. Link in bio."
     },
     {
       week: 4,
