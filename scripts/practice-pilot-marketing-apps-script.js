@@ -427,7 +427,7 @@ const FLYER_CONFIG = {
       week: 3,
       name: "hannah",
       priority: "urgent",
-      caption: "Hannah Drury, LMSW, works with adults and couples healing from trauma, managing anxiety, and navigating life transitions. She draws on CBT and somatic approaches to help clients reconnect with their bodies and trust their own wisdom. Hannah is currently accepting new clients — Tuesday through Friday afternoons and evenings, in-person in Houston Heights & telehealth across Texas. She also facilitates our Seeking Safety group for trauma and substance use. Link in bio."
+      caption: "Hannah Drury, LMSW, works with adults and couples healing from trauma, managing anxiety, and navigating life transitions. She draws on CBT and somatic approaches to help clients reconnect with their bodies and trust their own wisdom. Hannah is currently accepting new clients — Monday through Friday afternoons and evenings, in-person in Houston Heights & telehealth across Texas. She also facilitates our Seeking Safety group for trauma and substance use. Link in bio."
     },
     {
       week: 4,
