@@ -1156,7 +1156,7 @@ function testIntakeFlow() {
   onIntakeFormSubmit({
     values: [
       new Date(),                      // timestamp
-      'test@test.com',                 // auto email
+      'test@example.com',                 // auto email
       'Test Client',                   // name
       'testclient@example.com',        // client email
       'Individual',                    // therapy type
